@@ -18,13 +18,11 @@ Text goes here. Refer to the Markdown Quick Reference: Help -> Markdown Quick Re
 
 Text goes here.
 
-```{r}
-# Code goes here
+```{r glimpse-data}
+glimpse(Internship_Data_Untidy)
 ```
 
 ## 3. Data analysis plan
-
-Text goes here.
 
 
 ```{r}
