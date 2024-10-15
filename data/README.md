@@ -1,13 +1,15 @@
 # data
+Dimensions: 
+There are 1649 rows in the dataset.
+There are 9 columns in the dataset.
 
-Place data file(s) in this folder.
-
-Then, include codebooks (variables, and their descriptions) for your data file(s)
-using the following format.
-
-## name of data file
-
-- `variable1`: Description of variable 1
-- `variable2`: Description of variable 2
-- `variable3`: Description of variable 3
-- ...
+## Internship Data Untidy
+- `Term`: The term the internship was completed in 
+- `Year`: The year or time span the internship was completed in
+- `Internship Site`: The organization or person the internship was completed under
+- `Title (if applicable)`: The title of the position 
+- `Location`: The towns or places where the intership was completed
+- `Latitude`: Latitude coordinates of the internship site
+- `Longitude`: Longitude coordinates of the internship site
+- `Notes (if any)`: Notes about the internship proposal and addition physical materials included
+- `Notes on Location`: Information about the location of the internship or notes about the coordinates 
