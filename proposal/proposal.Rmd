@@ -1,13 +1,14 @@
 ---
 title: "Project proposal"
-author: "Team name"
+author: "Y&J Code Craze"
 output: html_document
 ---
 
-```{r load-packages, message = FALSE}
+```{r load-packages-and-data, message = FALSE}
 library(tidyverse)
 library(broom)
 
+Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.csv")
 ```
 
 ## 1. Introduction
@@ -15,8 +16,6 @@ library(broom)
 Text goes here. Refer to the Markdown Quick Reference: Help -> Markdown Quick Reference. 
 
 ## 2. Data
-
-Text goes here.
 
 ```{r}
 # Code goes here
