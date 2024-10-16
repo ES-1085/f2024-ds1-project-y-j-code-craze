@@ -12,13 +12,10 @@ Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.c
 ```
 
 ## 1. Introduction
-
-Text goes here. Refer to the Markdown Quick Reference: Help -> Markdown Quick Reference. 
-
+  Our data comes from information compiled by Jeffery Neuhouser and their work study students about the internships that COA students have taken over the last 50 years. The data was collected by looking over old internship reports and compiling them into a spreadsheet. This dataset is still growing as Jeffery continues to go through old documents. The currently expanding nature of the body of data  means that our dataset contains data only from students whose last names begin with the letters A through M. We don’t have information for students with surnames from N through Z. Each observation in this dataset represents information from a student's internship report. Some alumni information was mistakenly added to the dataset, so we will have to filter those observations out (those rows have NAs entered under almost every column). Our variables include: the term, the year, the employer or internship site, the title of position, the location, the coordinates, and notes on the internship and location. Jeffery sent us an additional list of industries COA alumni are presently involved in. The Career Development Office has asked that we try to categorize internship data by those industries. 
 ## 2. Data
 
-<<<<<<< HEAD
-This a small overview of our dataset.
+This is a small overview of our dataset.
 
 ```{r glimpse data}
 glimpse(Internship_Data_Untidy, na.rm = TRUE) 
