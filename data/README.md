@@ -3,7 +3,7 @@ Dimensions:
 There are 1649 rows in the dataset.
 There are 9 columns in the dataset.
 
-## Internship Data Untidy
+## Internship_Data_Untidy
 - `Term`: The term the internship was completed in 
 - `Year`: The year or time span the internship was completed in
 - `Internship Site`: The organization or person the internship was completed under
