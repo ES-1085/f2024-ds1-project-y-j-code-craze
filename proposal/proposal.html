@@ -366,11 +366,24 @@ Markdown Quick Reference.</p>
 </div>
 <div id="data" class="section level2">
 <h2>2. Data</h2>
-<pre class="r"><code># Code goes here</code></pre>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD This a small overview of our
+dataset.</p>
+<pre class="r"><code>glimpse(Internship_Data_Untidy, na.rm = TRUE) </code></pre>
+<pre><code>## Rows: 1,649
+## Columns: 9
+## $ Term                  &lt;chr&gt; &quot;Summer&quot;, &quot;Spring&quot;, &quot;Fall&quot;, &quot;Fall&quot;, &quot;Spring&quot;, &quot;S…
+## $ Year                  &lt;chr&gt; &quot;2015&quot;, &quot;2015&quot;, &quot;2011&quot;, &quot;2017&quot;, &quot;1997&quot;, &quot;2009&quot;, …
+## $ Internship.Site       &lt;chr&gt; &quot;Zocalo Permaculture Center&quot;, &quot;Zocab Permacultur…
+## $ Title..if.applicable. &lt;chr&gt; &quot;Intern&quot;, &quot;Assistant Manager&quot;, &quot;Designer&quot;, &quot;Vete…
+## $ Location              &lt;chr&gt; &quot;Gouldsboro, Maine&quot;, &quot;Gouldsboro, Maine&quot;, &quot;Solot…
+## $ Latitude              &lt;dbl&gt; 44.478412, NA, 47.318740, -6.201808, 44.387638, …
+## $ Longitude             &lt;dbl&gt; -68.038339, NA, 7.669828, 39.193376, -68.204336,…
+## $ Notes..if.any.        &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Not cle…
+## $ Notes.on.Location     &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;coordinates for…</code></pre>
+<pre class="r"><code>#&quot;na.rm = TRUE&quot; is being used because our raw dataset has a lot of NA rows that we were instructed by our data source (Jeffry Neuhouser) to disregard. The data will be tidied and sorted further into the project</code></pre>
 </div>
 <div id="data-analysis-plan" class="section level2">
 <h2>3. Data analysis plan</h2>
-<p>Text goes here.</p>
 <pre class="r"><code># Code goes here</code></pre>
 </div>
 <div id="data-ethics-review" class="section level2">

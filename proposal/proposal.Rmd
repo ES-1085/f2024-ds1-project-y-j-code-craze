@@ -17,6 +17,7 @@ Text goes here. Refer to the Markdown Quick Reference: Help -> Markdown Quick Re
 
 ## 2. Data
 
+<<<<<<< HEAD
 This a small overview of our dataset.
 
 ```{r glimpse data}
@@ -26,8 +27,6 @@ glimpse(Internship_Data_Untidy, na.rm = TRUE)
 ```
 
 ## 3. Data analysis plan
-
-Text goes here.
 
 
 ```{r}
