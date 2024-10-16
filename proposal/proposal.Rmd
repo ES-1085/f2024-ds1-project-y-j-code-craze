@@ -17,8 +17,12 @@ Text goes here. Refer to the Markdown Quick Reference: Help -> Markdown Quick Re
 
 ## 2. Data
 
-```{r}
-# Code goes here
+This a small overview of our dataset.
+
+```{r glimpse data}
+glimpse(Internship_Data_Untidy, na.rm = TRUE) 
+
+#"na.rm = TRUE" is being used because our raw dataset has a lot of NA rows that we were instructed by our data source (Jeffry Neuhouser) to disregard. The data will be tidied and sorted further into the project
 ```
 
 ## 3. Data analysis plan
