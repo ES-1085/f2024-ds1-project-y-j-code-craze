@@ -33,6 +33,8 @@ glimpse(Internship_Data_Untidy, na.rm = TRUE)
 
 ## 3. Data analysis plan
 
+
+Here are two initial visualizations to help us visualize what portion of students take interships in Bar Harbor versus other locations. The second graph helps us visualize the relationship between local and not local internships and the terms that students take them in.  
 ```{r}
 Internship_BH_or_Not <- Internship_Data_Untidy %>%
 mutate(BH_Location = if_else(Location == "Bar Harbor, Maine", "Bar Harbor", "Other")) %>% 

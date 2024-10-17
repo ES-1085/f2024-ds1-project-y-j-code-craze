@@ -408,6 +408,10 @@ looking at where and in what field COA internships are occurring.</p>
 </div>
 <div id="data-analysis-plan" class="section level2">
 <h2>3. Data analysis plan</h2>
+<p>Here are two initial visualizations to help us visualize what portion
+of students take interships in Bar Harbor versus other locations. The
+second graph helps us visualize the relationship between local and not
+local internships and the terms that students take them in.</p>
 <pre class="r"><code>Internship_BH_or_Not &lt;- Internship_Data_Untidy %&gt;%
 mutate(BH_Location = if_else(Location == &quot;Bar Harbor, Maine&quot;, &quot;Bar Harbor&quot;, &quot;Other&quot;)) %&gt;% 
 filter(BH_Location != &quot;NA&quot;)
