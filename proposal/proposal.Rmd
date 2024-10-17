@@ -34,7 +34,32 @@ glimpse(Internship_Data_Untidy, na.rm = TRUE)
 ## 3. Data analysis plan
 
 ```{r}
-# Code goes here
+Internship_BH_or_Not <- Internship_Data_Untidy %>%
+mutate(BH_Location = if_else(Location == "Bar Harbor, Maine", "Bar Harbor", "Other")) %>% 
+filter(BH_Location != "NA")
+Internship_BH_or_Not %>% 
+ggplot(mapping = aes(x = BH_Location,
+                    fill = BH_Location)) +
+geom_bar() +
+labs(title = "Internships in Bar Harbor vs. Other Locations",
+     x = "Location",
+     y = "Number of Internships") + 
+scale_fill_manual(values = c("Bar Harbor" = "lightblue", "Other" = "pink")) +
+guides(fill = FALSE)
+```
+```{r}
+Internship_BH_or_Not %>% 
+filter(BH_Location != "NA") %>%
+filter(Term == c("Fall", "Winter", "Spring", "Summer")) %>%
+ggplot(mapping = aes(x = BH_Location,
+                    fill = BH_Location)) +
+geom_bar() +
+facet_wrap(~ Term) +
+labs(title = "Internships in Bar Harbor vs. Other Locations by Term",
+     x = "Location",
+     y = "Number of Internships") +
+scale_fill_manual(values = c("Bar Harbor" = "lightblue", "Other" = "pink")) +
+guides(fill = FALSE)
 ```
 
 ## 4. Data Ethics Review
