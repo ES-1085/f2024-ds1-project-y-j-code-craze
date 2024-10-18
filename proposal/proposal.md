@@ -67,8 +67,34 @@ glimpse(Internship_Data_Untidy, na.rm = TRUE)
 
 ## 3. Data analysis plan
 
+**What variables will you visualize to explore your research
+questions?**
+
+We want to explore the locations in which COA students undertake
+internships—locally, nationally, or internationally—and if students have
+changed where they take internships over time. Additionally, Jeffry
+asked us to explore the wider regions (or as they described it , “hubs”)
+where students go for internships. We hope to visualize this area based
+distribution with something like a heat map. Upon Jeffry’s request, we
+will also try to visualize which terms students participate in
+internships. Furthermore, we want to look at the industries COA students
+take internships in and if there are any popular internship
+locations/opportunities. One idea for how to visualize this may be by
+using a histogram.
+
+**Will there be any other data that you need to find to help with your
+research question?**
+
+Currently we don’t need any other data to answer our research question.
+If we do need help, we will contact Jeffry or Rūdy (he has been doing a
+lot of work on compiling the data).
+
+**Very preliminary exploratory data analysis, including some summary
+statistics and visualizations, along with some explanation on how they
+help you learn more about your data.**
+
 Here are two initial visualizations to help us visualize what portion of
-students take interships in Bar Harbor versus other locations. The
+students take internships in Bar Harbor versus other locations. The
 second graph helps us visualize the relationship between local and not
 local internships and the terms that students take them in.
 
@@ -116,6 +142,16 @@ guides(fill = FALSE)
     ## ! longer object length is not a multiple of shorter object length
 
 ![](proposal_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+**The data visualization(s) that you believe will be useful in exploring
+your question(s).**
+
+We think that bar graphs, ridge plots, violin plots, and density graphs
+may be helpful to visualize our data. The majority of our data is
+categorical, so those visualizations will be the most helpful. We also
+think it could be interesting to create a map with dots or circles to
+represent where COA students take internships. This may be challenging,
+so we’ll see how it goes.
 
 ## 4. Data Ethics Review
 

@@ -45,11 +45,6 @@ Currently we don’t need any other data to answer our research question. If we 
 
 Here are two initial visualizations to help us visualize what portion of students take internships in Bar Harbor versus other locations. The second graph helps us visualize the relationship between local and not local internships and the terms that students take them in.
 
-<<<<<<< HEAD
-Here are two initial visualizations to help us visualize what portion of students take interships in Bar Harbor versus other locations. The second graph helps us visualize the relationship between local and not local internships and the terms that students take them in.
-
-=======
->>>>>>> d8a85e7252a4684daec110043817407dcbff3c0e
 ```{r}
 Internship_BH_or_Not <- Internship_Data_Untidy %>%
 mutate(BH_Location = if_else(Location == "Bar Harbor, Maine", "Bar Harbor", "Other")) %>% 
