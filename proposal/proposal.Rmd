@@ -25,7 +25,7 @@ We hope that this research question can allow us to meaningfully investigate the
 
 This is a small overview of our dataset.
 
-```{r glimpse data}
+```{r glimpse-data}
 glimpse(Internship_Data_Untidy, na.rm = TRUE) 
 
 #"na.rm = TRUE" is being used because our raw dataset has a lot of NA rows that we were instructed by our data source (Jeffry Neuhouser) to disregard. The data will be tidied and sorted further into the project
@@ -45,7 +45,7 @@ Currently we don’t need any other data to answer our research question. If we 
 
 Here are two initial visualizations to help us visualize what portion of students take internships in Bar Harbor versus other locations. The second graph helps us visualize the relationship between local and not local internships and the terms that students take them in.
 
-```{r}
+```{r preliminary-visualisation-1}
 Internship_BH_or_Not <- Internship_Data_Untidy %>%
 mutate(BH_Location = if_else(Location == "Bar Harbor, Maine", "Bar Harbor", "Other")) %>% 
 filter(BH_Location != "NA")
@@ -60,7 +60,7 @@ scale_fill_manual(values = c("Bar Harbor" = "lightblue", "Other" = "pink")) +
 guides(fill = FALSE)
 ```
 
-```{r}
+```{r preliminary-visualisation-2}
 Internship_BH_or_Not %>% 
 filter(BH_Location != "NA") %>%
 filter(Term == c("Fall", "Winter", "Spring", "Summer")) %>%
