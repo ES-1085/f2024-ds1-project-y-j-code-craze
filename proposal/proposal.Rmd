@@ -63,7 +63,7 @@ guides(fill = FALSE)
 ```{r preliminary-visualisation-2}
 Internship_BH_or_Not %>% 
 filter(BH_Location != "NA") %>%
-filter(Term == c("Fall", "Winter", "Spring", "Summer")) %>%
+filter(Term == c("Fall", "Winter", "Spring", "Summer")) %>% 
 ggplot(mapping = aes(x = BH_Location,
                     fill = BH_Location)) +
 geom_bar() +
