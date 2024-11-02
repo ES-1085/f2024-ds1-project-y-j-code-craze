@@ -13,7 +13,7 @@ library(broom)
 
 ## Data Clean Up Steps for Overall Data
 
-### Step 1: _________
+### Step 1: 
 
 ```{r}
 
