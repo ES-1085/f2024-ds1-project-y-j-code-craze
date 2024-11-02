@@ -33,11 +33,18 @@ mutate(Term = case_when(
 ))
 ```
 
-```{r}
+```{r }
 Tidy_Term %>% 
   group_by(Term) %>%
   summarise(count = n())
 ```
+```{r year-shit}
+unique(Tidy_Term$Year)
+```
 
+```{r tidy-year}
+Tidy_Time_Data <- Tidy_Term %>% 
+
+```
 
 
