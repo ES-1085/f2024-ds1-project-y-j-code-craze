@@ -152,21 +152,30 @@ ggsave("example-starwars-wide.png", width = 6, height = 4)
 
 
 
-### Plot 1: _________
-
-#### Data cleanup steps specific to plot 1
-
-These data cleaning sections are optional and depend on if you have some data cleaning steps specific to a particular plot
+### Plot 1: Year-Term Bar Polar Chart
 
 ```{r}
+# Summarise the data by Year and Term
+Tidy_Time_Summary <- Tidy_Time %>%
+  drop_na(Term) %>% 
+  drop_na(Year) %>% 
+  group_by(Year, Term) %>%
+  summarise(count = n()) %>%
+  ungroup()
 
+Tidy_Time_Summary %>% 
+  ggplot(aes(x = Year, y = count, fill = Term)) + 
+  geom_bar(stat = "identity", position = "stack") + 
+  coord_polar(start = 0) + 
+  theme_minimal()
 ```
 
-
-#### Final Plot 1
-
 ```{r}
-
+Tidy_Time_Summary %>% 
+  ggplot(aes(x = Term, y = count, fill = Year)) + 
+  geom_bar(stat = "identity", position = "stack") + 
+  coord_polar(start = 0) + 
+  theme_minimal() 
 ```
 
 
