@@ -87,3 +87,10 @@ arrange(Year) %>%
   slice(1000:1628)
 ```
 
+```{r}
+Tidy_Time %>% 
+  group_by(Year) %>%
+  summarise(count = n())
+```
+
+
