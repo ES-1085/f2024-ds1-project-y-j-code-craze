@@ -4,6 +4,9 @@ Tidying Term Data
 ```{r load-stuffs}
 library(tidyverse)
 library(broom)
+library(leaflet)
+library(colorspace)
+library(sf)
 
 Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.csv")
 ```
@@ -42,9 +45,15 @@ Tidy_Term %>%
 unique(Tidy_Term$Year)
 ```
 
-```{r tidy-year}
-Tidy_Time_Data <- Tidy_Term %>% 
+```{r clean-location-data}
+Tidy_Term <- Tidy_Term %>% 
+mutate(Location = str_squish(Location))
+```
 
+
+```{r map-attempt}
+ggplot(Tidy_Term) +
+  geom_sf(aes(x = Latitude, y = Longitude))
 ```
 
 

@@ -164,10 +164,19 @@ Tidy_Time_Summary <- Tidy_Time %>%
   ungroup()
 
 Tidy_Time_Summary %>% 
-  ggplot(aes(x = Year, y = count, fill = Term)) + 
+  ggplot(aes(x = Year, y = count, fill = fct_relevel(Term, c("Summer", "Spring", "Winter", "Fall")))) + 
   geom_bar(stat = "identity", position = "stack") + 
   coord_polar(start = 0) + 
-  theme_minimal()
+  labs(
+    title = "Student Internship Term Beakup by Year",
+    subtitle = "Data from College of the Atlantic (1970 to 2023)",
+    x = "Year",
+    fill = "Term") +
+  theme_minimal() +
+  theme(axis.title.y = element_blank(),
+        axis.line = element_blank(), 
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank())
 ```
 
 ```{r}
@@ -175,7 +184,15 @@ Tidy_Time_Summary %>%
   ggplot(aes(x = Term, y = count, fill = Year)) + 
   geom_bar(stat = "identity", position = "stack") + 
   coord_polar(start = 0) + 
-  theme_minimal() 
+  labs(
+    title = "Student Internship Year Breakup by Term",
+    subtitle = "Data from College of the Atlantic (1970 to 2023)",
+    x = "Term") + 
+  theme_minimal() +  
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        legend.key.size = unit(0.7, "lines")) +
+  scale_fill_viridis_d()
 ```
 
 
