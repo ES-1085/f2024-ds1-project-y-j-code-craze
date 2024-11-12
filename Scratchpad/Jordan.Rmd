@@ -7,6 +7,9 @@ library(broom)
 library(leaflet)
 library(colorspace)
 library(sf)
+library(visdat)
+library(naniar)
+library(UpSetR)
 
 Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.csv")
 ```
@@ -50,10 +53,26 @@ Tidy_Term <- Tidy_Term %>%
 mutate(Location = str_squish(Location))
 ```
 
-
-```{r map-attempt}
-ggplot(Tidy_Term) +
-  geom_sf(aes(x = Latitude, y = Longitude))
+```{r}
+Tidy_Time %>% 
+ggplot(aes(x = Year,
+    fill = Term)) +
+ geom_bar(position = "fill") +
+  scale_fill_viridis_d()
 ```
 
+
+```{r map-attempt}
+summary(Tidy_Time)
+```
+
+```{r}
+Missing_data <- Tidy_Time %>% 
+  select(Term, Location, Latitude, Longitude)
+
+  vis_dat(Missing_data)
+```
+```{r}
+vis_miss(Missing_data)
+```
 
