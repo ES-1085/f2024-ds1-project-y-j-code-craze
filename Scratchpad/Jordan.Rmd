@@ -76,3 +76,16 @@ Missing_data <- Tidy_Time %>%
 vis_miss(Missing_data)
 ```
 
+```{r}
+Missing_data <- Tidy_Mapped %>% 
+  select(Term, Location, Latitude, Longitude)
+
+  vis_dat(Missing_data)
+```
+```{r}
+Missing_data <- Tidy_Mapped %>% 
+  select(Term, Location, Latitude, Longitude)
+
+  vis_miss(Missing_data)
+```
+
