@@ -152,9 +152,9 @@ ggsave("example-starwars-wide.png", width = 6, height = 4)
 
 
 
-### Plot 1: Year-Term Bar Polar Chart
+### Test Plots: Year-Term Bar Polar Charts
 
-```{r}
+```{r test-plot-1}
 # Summarise the data by Year and Term
 Tidy_Time_Summary <- Tidy_Time %>%
   drop_na(Term) %>% 
@@ -179,28 +179,30 @@ Tidy_Time_Summary %>%
         axis.text.y = element_blank())
 ```
 
-```{r}
+```{r test-plot-2}
 Tidy_Time_Summary %>% 
-  ggplot(aes(x = Term, y = count, fill = Year)) + 
+  ggplot(aes(x = Term, y = count, fill = as.numeric(Year))) + 
   geom_bar(stat = "identity", position = "stack") + 
   coord_polar(start = 0) + 
   labs(
     title = "Student Internship Year Breakup by Term",
     subtitle = "Data from College of the Atlantic (1970 to 2023)",
-    x = "Term") + 
+    x = "Term",
+    fill = "Year") + 
   theme_minimal() +  
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank(),
         legend.key.size = unit(0.7, "lines")) +
-  scale_fill_viridis_d()
+  scale_fill_viridis_c(direction = -1)
+```
+```{r test-plot-3}
+
 ```
 
 
-### Plot 2: _________
+### Plot 1: _________
 
-### Plot 3: ___________
+### Plot 2: ___________
 
-Add more plot sections as needed. Each project should have at least 3 plots, but talk to me if you have fewer than 3.
-
-### Plot 4: ___________ 
+### Plot 3: ___________ 
 
