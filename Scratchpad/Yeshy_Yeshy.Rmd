@@ -98,3 +98,27 @@ Tidy_Time %>%
 unique(Tidy_Time$Location)
 ```
 
+```{r}
+# additional cleaning 
+
+Tidy_Mapped_Clean <- Tidy_Mapped %>% 
+  filter(Year != "0") %>% 
+   filter(!is.na(Term), !is.na(Location), !is.na(Longitude), !is.na(Latitude))
+```
+
+```{r}
+# checking
+Test_Cleaning <- Tidy_Mapped_Clean %>% 
+  select(Term, Location, Latitude, Longitude, Year)
+
+  vis_miss(Test_Cleaning)
+
+```
+```{r}
+Test_Cleaning <- Tidy_Mapped_Clean %>% 
+  select(Term, Location, Latitude, Longitude, Year)
+
+  vis_dat(Test_Cleaning)
+
+```
+
