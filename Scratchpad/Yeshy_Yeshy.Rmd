@@ -94,3 +94,7 @@ Tidy_Time %>%
 ```
 
 
+```{r}
+unique(Tidy_Time$Location)
+```
+
