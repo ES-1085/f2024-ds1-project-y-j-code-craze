@@ -1,7 +1,7 @@
 ---
 title: "Project memo"
 author: "Y & J Code Craze"
-output: github_document
+output: html_document
 ---
 
 This document should contain a detailed account of the data clean up for your data and the design choices you are making for your plots. For instance you will want to document choices you've made that were intentional for your graphic, e.g. color you've chosen for the plot. Think of this document as a code script someone can follow to reproduce the data cleaning steps and graphics in your handout.
@@ -18,6 +18,8 @@ library(visdat)
 library(naniar)
 library(UpSetR)
 Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.csv")
+Tidy_Mapped_Clean <- read.csv("/cloud/project/data/Tidy_Mapped_Clean.csv")
+Internship_Leaflet_Cleaned_Complete <- read_csv("data/Internship_Leaflet_Cleaned - Complete.csv")
 ```
 
 ## Data Clean Up Steps for Overall Data
@@ -204,27 +206,29 @@ Tidy_Time_Summary %>%
   scale_fill_viridis_c(direction = -1)
 ```
 ```{r test-plot-3}
-#building leaflet
-
 leaflet(Tidy_Mapped_Clean) %>%
   addTiles() %>%
   setView(lng = mean(Tidy_Mapped_Clean$Longitude, na.rm = TRUE), 
           lat = mean(Tidy_Mapped_Clean$Latitude, na.rm = TRUE), 
           zoom = 2) %>%
-  addMarkers(~Longitude, ~Latitude, 
+  addMarkers(~Longitude, ~Latitude,
              popup = ~paste(Internship.Site, "<br>", Location))
 ```
-```{r experiment}
-leaflet(experiment) %>%
+
+```{r test-plot-4}
+leaflet(Tidy_Mapped_Clean) %>%
   addTiles() %>%
-  setView(lng = mean(experiment$Longitude, na.rm = TRUE), 
-          lat = mean(experiment$Latitude, na.rm = TRUE), 
+  setView(lng = mean(Tidy_Mapped_Clean$Longitude, na.rm = TRUE), 
+          lat = mean(Tidy_Mapped_Clean$Latitude, na.rm = TRUE), 
           zoom = 2) %>%
-  addMarkers(~Longitude, ~Latitude, 
+  addMarkers(~Longitude, ~Latitude,
              clusterOptions = markerClusterOptions(),
              popup = ~paste(Internship.Site, "<br>", Location))
 ```
 
+```{r test-plot-5}
+
+```
 
 ### Plot 1: _________
 
