@@ -62,6 +62,12 @@ ggplot(aes(x = Year,
  geom_bar(position = "fill") +
   scale_fill_viridis_d()
 ```
+```{r}
+Tidy_Mapped %>% 
+  filter(Year > 0) %>% 
+ggplot(aes(x = Year)) + 
+  geom_histogram(binwidth = 1)
+```
 
 
 ```{r map-attempt}
@@ -86,7 +92,7 @@ Missing_data <- Tidy_Mapped %>%
 ```
 ```{r}
 Missing_data <- Tidy_Mapped %>% 
-  select(Term, Location, Latitude, Longitude)
+  select(Term, Location, Latitude, Longitude, Internship.Site, Title..if.applicable., Year)
 
   vis_miss(Missing_data)
 ```
