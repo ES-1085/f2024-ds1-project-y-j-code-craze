@@ -97,3 +97,11 @@ Missing_data <- Tidy_Mapped %>%
   vis_miss(Missing_data)
 ```
 
+
+```{r squishy-squish}
+Tidy_Mapped_Clean %>% 
+mutate(Internship.Site = str_squish(Internship.Site)) %>% 
+unique(Internship.Site)
+```
+
+
