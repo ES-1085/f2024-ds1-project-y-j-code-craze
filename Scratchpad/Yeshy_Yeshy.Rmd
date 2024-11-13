@@ -95,10 +95,6 @@ Tidy_Time %>%
 
 
 ```{r}
-unique(Tidy_Time$Location)
-```
-
-```{r}
 # additional cleaning 
 
 Tidy_Mapped_Clean <- Tidy_Mapped %>% 
@@ -120,5 +116,75 @@ Test_Cleaning <- Tidy_Mapped_Clean %>%
 
   vis_dat(Test_Cleaning)
 
+```
+```{r}
+write.csv(Tidy_Mapped_Clean, "Tidy_Mapped_Clean.csv", row.names = FALSE)
+```
+
+```{r}
+# Load necessary libraries
+library(tidyverse)
+library(tidygeocoder)  # For geocoding with Nominatim API
+
+# Load the data
+experiment <- read.csv("/cloud/project/data/Tidy_Time.csv")
+
+# Function to get coordinates based on the location
+get_coordinates <- function(location) {
+  if (is.na(location)) {
+    return(c(NA, NA)) # Leave as NaN if location is NaN
+  }
+  
+  # Handle multiple entries by taking the second one if separated by '/'
+  if (grepl("/", location)) {
+    location <- str_split(location, "/")[[1]][2] %>% str_trim()
+  }
+  
+  # Try geocoding with town/city
+  result <- tryCatch(
+    {
+      Sys.sleep(1)  # Add delay of 1 second between requests
+      geocode(location, method = 'osm', lat = Latitude, long = Longitude, limit = 1)
+    },
+    error = function(e) tibble(Latitude = NA, Longitude = NA) # In case of failure
+  )
+  
+  # Fallback to state or country if exact town/city is not found
+  if (is.na(result$Latitude)) {
+    if (grepl(",", location)) {
+      fallback_location <- str_split(location, ",")[[1]][2] %>% str_trim()
+      result <- tryCatch(
+        {
+          Sys.sleep(1)  # Add delay for fallback geocoding attempt
+          geocode(fallback_location, method = 'osm', lat = Latitude, long = Longitude, limit = 1)
+        },
+        error = function(e) tibble(Latitude = NA, Longitude = NA)
+      )
+    }
+  }
+  
+  # Default to Bar Harbor, ME coordinates if both fail
+  if (is.na(result$Latitude)) {
+    result <- tibble(Latitude = 44.387611, Longitude = -68.203911) # Bar Harbor, ME coordinates
+  }
+  
+  return(c(result$Latitude, result$Longitude))
+}
+
+# Apply the function to fill in missing Latitude and Longitude
+experiment <- experiment %>%
+  mutate(
+    coords = map(Location, get_coordinates),
+    Latitude = ifelse(is.na(Latitude), map_dbl(coords, 1), Latitude),
+    Longitude = ifelse(is.na(Longitude), map_dbl(coords, 2), Longitude)
+  ) %>%
+  select(-coords) # Drop intermediate column
+
+# Save the updated dataset
+write.csv(data, "Tidy_Time_Filled.csv", row.names = FALSE)
+```
+
+```{r}
+write.csv(experiment, "experiment.csv", row.names = FALSE)
 ```
 

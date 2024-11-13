@@ -9,6 +9,14 @@ This document should contain a detailed account of the data clean up for your da
 ```{r load-packages, message = FALSE}
 library(tidyverse)
 library(broom)
+library(tidyverse)
+library(broom)
+library(leaflet)
+library(colorspace)
+library(sf)
+library(visdat)
+library(naniar)
+library(UpSetR)
 Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.csv")
 ```
 
@@ -196,7 +204,25 @@ Tidy_Time_Summary %>%
   scale_fill_viridis_c(direction = -1)
 ```
 ```{r test-plot-3}
+#building leaflet
 
+leaflet(Tidy_Mapped_Clean) %>%
+  addTiles() %>%
+  setView(lng = mean(Tidy_Mapped_Clean$Longitude, na.rm = TRUE), 
+          lat = mean(Tidy_Mapped_Clean$Latitude, na.rm = TRUE), 
+          zoom = 2) %>%
+  addMarkers(~Longitude, ~Latitude, 
+             popup = ~paste(Internship.Site, "<br>", Location))
+```
+```{r experiment}
+leaflet(experiment) %>%
+  addTiles() %>%
+  setView(lng = mean(experiment$Longitude, na.rm = TRUE), 
+          lat = mean(experiment$Latitude, na.rm = TRUE), 
+          zoom = 2) %>%
+  addMarkers(~Longitude, ~Latitude, 
+             clusterOptions = markerClusterOptions(),
+             popup = ~paste(Internship.Site, "<br>", Location))
 ```
 
 
