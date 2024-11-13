@@ -17,9 +17,9 @@ library(sf)
 library(visdat)
 library(naniar)
 library(UpSetR)
+
 Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.csv")
 Tidy_Mapped_Clean <- read.csv("/cloud/project/data/Tidy_Mapped_Clean.csv")
-Internship_Leaflet_Cleaned_Complete <- read_csv("data/Internship_Leaflet_Cleaned - Complete.csv")
 ```
 
 ## Data Clean Up Steps for Overall Data
