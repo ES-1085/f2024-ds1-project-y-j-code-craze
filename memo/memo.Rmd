@@ -333,6 +333,17 @@ leaflet(Internship_Leaflet_Cleaned_Complete) %>%
             labFormat = labelFormat(prefix = ""))
 ```
 
+```{r tes-plot-6}
+leaflet(Internship_Leaflet_Cleaned_Complete) %>%
+  addTiles() %>%
+  setView(lng = mean(Internship_Leaflet_Cleaned_Complete$Longitude, na.rm = TRUE), 
+          lat = mean(Internship_Leaflet_Cleaned_Complete$Latitude, na.rm = TRUE), 
+          zoom = 2) %>%
+  addMarkers(~Longitude, ~Latitude, 
+             clusterOptions = markerClusterOptions(),
+             popup = ~paste(Internship.Site, "<br>", Location))
+```
+
 ### Plot 1: Bar Chart of Term ... more here
 
 ```{r plot-1}
