@@ -20,7 +20,7 @@ library(UpSetR)
 
 Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.csv")
 Tidy_Mapped_Clean <- read.csv("/cloud/project/data/Tidy_Mapped_Clean.csv")
-Internship_Leaflet_Cleaned_Complete <- read_csv("/cloud/project/data/Internship_Leaflet_Cleaned - Complete.csv")
+Internship_Leaflet_Cleaned_Complete <- read_csv("/cloud/project/data/Internship_Leaflet_Official - Complete.csv")
 ```
 
 ## Data Clean Up Steps for Overall Data
@@ -165,7 +165,7 @@ We wanted to layer our leaflet maps by decade.
 Tidy_Mapped_Clean <- Tidy_Mapped_Clean %>% 
   mutate(Decade = (floor(Year/10)*10))
 
-Internship_Leaflet_Cleaned_Complete <- Internship_Leaflet_Cleaned_Complete %>% 
+Internship_Leaflet_Official_Complete <- Internship_Leaflet_Official_Complete %>% 
   mutate(Decade = (floor(Year/10)*10))
 ```
 
@@ -282,44 +282,44 @@ leaflet(Tidy_Mapped_Clean) %>%
 ```
 
 ```{r test-plot-5}
-pal <- colorFactor(palette = c("red", "orange", "yellow", "green", "blue", "purple"), domain = Internship_Leaflet_Cleaned_Complete$Decade)
+pal <- colorFactor(palette = c("red", "orange", "yellow", "green", "blue", "purple"), domain = Internship_Leaflet_Official_Complete$Decade)
 
-leaflet(Internship_Leaflet_Cleaned_Complete) %>%
+leaflet(Internship_Leaflet_Official_Complete) %>%
   addTiles() %>%
-  setView(lng = mean(Internship_Leaflet_Cleaned_Complete$Longitude, na.rm = TRUE), 
-          lat = mean(Internship_Leaflet_Cleaned_Complete$Latitude, na.rm = TRUE), 
+  setView(lng = mean(Internship_Leaflet_Official_Complete$Longitude, na.rm = TRUE), 
+          lat = mean(Internship_Leaflet_Official_Complete$Latitude, na.rm = TRUE), 
           zoom = 2) %>%
-  addCircleMarkers(data = Internship_Leaflet_Cleaned_Complete %>% filter(Decade == "1970"),
+  addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "1970"),
                    ~Longitude, 
                    ~Latitude, 
                    color = ~pal(Decade),
                    group = "1970s",
                    popup = ~paste(Internship.Site, "<br>", Location)) %>% 
-  addCircleMarkers(data = Internship_Leaflet_Cleaned_Complete %>% filter(Decade == "1980"),
+  addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "1980"),
                    ~Longitude, 
                    ~Latitude, 
                    color = ~pal(Decade),
                    group = "1980s",
                    popup = ~paste(Internship.Site, "<br>", Location)) %>% 
-  addCircleMarkers(data = Internship_Leaflet_Cleaned_Complete %>% filter(Decade == "1990"),
+  addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "1990"),
                    ~Longitude, 
                    ~Latitude, 
                    color = ~pal(Decade),
                    group = "1990s",
                    popup = ~paste(Internship.Site, "<br>", Location)) %>% 
-  addCircleMarkers(data = Internship_Leaflet_Cleaned_Complete %>% filter(Decade == "2000"),
+  addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "2000"),
                    ~Longitude, 
                    ~Latitude, 
                    color = ~pal(Decade),
                    group = "2000s",
                    popup = ~paste(Internship.Site, "<br>", Location)) %>% 
-  addCircleMarkers(data = Internship_Leaflet_Cleaned_Complete %>% filter(Decade == "2010"),
+  addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "2010"),
                    ~Longitude, 
                    ~Latitude, 
                    color = ~pal(Decade),
                    group = "2010s",
                    popup = ~paste(Internship.Site, "<br>", Location)) %>% 
-  addCircleMarkers(data = Internship_Leaflet_Cleaned_Complete %>% filter(Decade == "2020"),
+  addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "2020"),
                    ~Longitude, 
                    ~Latitude, 
                    color = ~pal(Decade),
@@ -328,16 +328,16 @@ leaflet(Internship_Leaflet_Cleaned_Complete) %>%
   addLayersControl(overlayGroups = c("1970s", "1980s", "1990s", "2000s", "2010s", "2020s")) %>%
   addLegend("bottomright", 
             pal = pal, 
-            values = Internship_Leaflet_Cleaned_Complete$Decade[!is.na(Internship_Leaflet_Cleaned_Complete$Decade)],
+            values = Internship_Leaflet_Official_Complete$Decade[!is.na(Internship_Leaflet_Official_Complete$Decade)],
             title = "Decade",
             labFormat = labelFormat(prefix = ""))
 ```
 
 ```{r tes-plot-6}
-leaflet(Internship_Leaflet_Cleaned_Complete) %>%
+leaflet(Internship_Leaflet_Official_Complete) %>%
   addTiles() %>%
-  setView(lng = mean(Internship_Leaflet_Cleaned_Complete$Longitude, na.rm = TRUE), 
-          lat = mean(Internship_Leaflet_Cleaned_Complete$Latitude, na.rm = TRUE), 
+  setView(lng = mean(Internship_Leaflet_Official_Complete$Longitude, na.rm = TRUE), 
+          lat = mean(Internship_Leaflet_Official_Complete$Latitude, na.rm = TRUE), 
           zoom = 2) %>%
   addMarkers(~Longitude, ~Latitude, 
              clusterOptions = markerClusterOptions(),
