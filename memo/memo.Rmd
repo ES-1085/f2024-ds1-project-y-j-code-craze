@@ -157,7 +157,12 @@ us_states <- c("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colora
                "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", 
                "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", 
                "West Virginia", "Wisconsin", "Wyoming")
-local_cities <- c("Bar Harbor", "Northea", "Chicago")
+Internship_Leaflet_Official_Complete <- Internship_Leaflet_Official_Complete %>%
+mutate(region = str_extract(Location, "(?<=, ).+$"),
+       Location_Type = case_when(
+         Location %in% c("Bar Harbor, Maine", "Northeast Harbor, Maine", "Southwest Harbor, Maine", "Otter Creek, Maine", "Seal Cove, Maine", "Mount Desert, Maine", "Mount Desert Island, Maine", "Hulls Cove, Maine", "Town Hill, Maine", "Somesville, Maine", "Salsbury Cove, Maine") ~ "Local",
+      region %in% us_states ~ "Domestic",
+      TRUE ~ "International"))
 ```
 
 
@@ -367,6 +372,34 @@ leaflet(Internship_Leaflet_Official_Complete) %>%
              clusterOptions = markerClusterOptions(),
              popup = ~paste(Internship.Site, "<br>", Location))
 ```
+
+```{r test-plot-lucky-number-7}
+Internship_Leaflet_Official_Complete %>% 
+  filter(Decade != "NA") %>% 
+  ggplot(aes(x = Location_Type,
+             fill = Location_Type)) +
+ geom_bar() +
+   facet_wrap(~Decade) +
+  scale_fill_viridis_d()
+```
+
+```{r test-plot-number-8}
+Internship_Leaflet_Official_Complete %>% 
+  ggplot(aes(y = Year,
+             fill = Location_Type)) +
+ geom_bar(position = "fill") +
+  scale_fill_viridis_d()
+```
+
+```{r test-plot-9}
+Internship_Leaflet_Official_Complete %>%
+  count(Year, Location_Type) %>%
+  ggplot(aes(x = Year, y = n, colour = Location_Type)) +
+  geom_line(alpha = 0.5) +
+  theme_minimal() +
+  labs(x = "Year", y = "Count", title = "Counts of Internship Locations by Year and Type")
+```
+
 
 ### Plot 1: Bar Chart of Term ... more here
 
