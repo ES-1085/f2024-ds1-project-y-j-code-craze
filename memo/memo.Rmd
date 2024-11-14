@@ -20,7 +20,7 @@ library(UpSetR)
 
 Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.csv")
 Tidy_Mapped_Clean <- read.csv("/cloud/project/data/Tidy_Mapped_Clean.csv")
-Internship_Leaflet_Cleaned_Complete <- read_csv("/cloud/project/data/Internship_Leaflet_Official - Complete.csv")
+Internship_Leaflet_Official_Complete <- read_csv("/cloud/project/data/Internship_Leaflet_Official - Complete.csv")
 ```
 
 ## Data Clean Up Steps for Overall Data
@@ -145,8 +145,8 @@ Tidy_Mapped_Clean <- Tidy_Mapped_Clean %>%
 ```
 
 ### Step 4 Create Local, Domestic, and International Catagories 
-We wanted to compare each catagory of internship by decade.
-```{r}
+We wanted to compare each category of internship by decade.
+```{r create-location-type}
 us_states <- c("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
                "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", 
                "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", 
@@ -190,7 +190,7 @@ ggsave("example-starwars-wide.png", width = 6, height = 4)
 
 ### Step 3 Create a Decade Variable 
 We wanted to layer our leaflet maps by decade. 
-```{r create-decade}
+```{r create-decade-variable}
 Tidy_Mapped_Clean <- Tidy_Mapped_Clean %>% 
   mutate(Decade = (floor(Year/10)*10))
 
@@ -323,37 +323,37 @@ leaflet(Internship_Leaflet_Official_Complete) %>%
                    ~Latitude, 
                    color = ~pal(Decade),
                    group = "1970s",
-                   popup = ~paste(Internship.Site, "<br>", Location)) %>% 
+                   popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year)) %>% 
   addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "1980"),
                    ~Longitude, 
                    ~Latitude, 
                    color = ~pal(Decade),
                    group = "1980s",
-                   popup = ~paste(Internship.Site, "<br>", Location)) %>% 
+                   popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year)) %>% 
   addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "1990"),
                    ~Longitude, 
                    ~Latitude, 
                    color = ~pal(Decade),
                    group = "1990s",
-                   popup = ~paste(Internship.Site, "<br>", Location)) %>% 
+                   popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year)) %>% 
   addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "2000"),
                    ~Longitude, 
                    ~Latitude, 
                    color = ~pal(Decade),
                    group = "2000s",
-                   popup = ~paste(Internship.Site, "<br>", Location)) %>% 
+                   popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year)) %>% 
   addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "2010"),
                    ~Longitude, 
                    ~Latitude, 
                    color = ~pal(Decade),
                    group = "2010s",
-                   popup = ~paste(Internship.Site, "<br>", Location)) %>% 
+                   popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year)) %>% 
   addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "2020"),
                    ~Longitude, 
                    ~Latitude, 
                    color = ~pal(Decade),
                    group = "2020s",
-                   popup = ~paste(Internship.Site, "<br>", Location)) %>% 
+                   popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year)) %>% 
   addLayersControl(overlayGroups = c("1970s", "1980s", "1990s", "2000s", "2010s", "2020s")) %>%
   addLegend("bottomright", 
             pal = pal, 
@@ -370,7 +370,7 @@ leaflet(Internship_Leaflet_Official_Complete) %>%
           zoom = 2) %>%
   addMarkers(~Longitude, ~Latitude, 
              clusterOptions = markerClusterOptions(),
-             popup = ~paste(Internship.Site, "<br>", Location))
+             popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year))
 ```
 
 ```{r test-plot-lucky-number-7}
@@ -386,8 +386,8 @@ Internship_Leaflet_Official_Complete %>%
 ```{r test-plot-number-8}
 Internship_Leaflet_Official_Complete %>% 
   ggplot(aes(y = Year,
-             fill = Location_Type)) +
- geom_bar(position = "fill") +
+         fill = Location_Type)) + 
+  geom_bar(position = "fill") + 
   scale_fill_viridis_d()
 ```
 
@@ -398,6 +398,15 @@ Internship_Leaflet_Official_Complete %>%
   geom_line(alpha = 0.5) +
   theme_minimal() +
   labs(x = "Year", y = "Count", title = "Counts of Internship Locations by Year and Type")
+```
+
+```{r test-plot-10}
+Internship_Leaflet_Official_Complete %>%
+ggplot(aes(x = Decade,
+             fill = Location_Type)) +
+ geom_bar(position = "stack") +
+  facet_wrap(~Location_Type, nrow = 3, scales = "free_y") +
+  scale_fill_viridis_d()
 ```
 
 
