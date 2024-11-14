@@ -140,6 +140,30 @@ Tidy_Time %>%
 ```
 yay! it's all tidy! 
 
+### Step 3 Create a Decade Variable 
+We wanted to layer our leaflet maps by decade. 
+```{r create-decade}
+Tidy_Mapped_Clean <- Tidy_Mapped_Clean %>% 
+  mutate(Decade = (floor(Year/10)*10))
+```
+
+### Step 4 Create Local, Domestic, and International Catagories 
+We wanted to compare each catagory of internship by decade.
+```{r}
+us_states <- c("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
+               "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", 
+               "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", 
+               "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", 
+               "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", 
+               "New Hampshire", "New Jersey", "New Mexico", "New York", 
+               "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", 
+               "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", 
+               "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", 
+               "West Virginia", "Wisconsin", "Wyoming")
+local_cities <- c("Bar Harbor", "Northea", "Chicago")
+```
+
+
 ### ggsave example for saving plots
 
 ```{r starwars ggsave example}
@@ -160,13 +184,6 @@ exp1 <- starwars |>
 ggsave("example-starwars.png", width = 4, height = 4)
 
 ggsave("example-starwars-wide.png", width = 6, height = 4)
-```
-
-### Step 3 Create a Decade Variable 
-We wanted to layer our leaflet maps by decade. 
-```{r create-decade}
-Tidy_Mapped_Clean <- Tidy_Mapped_Clean %>% 
-  mutate(Decade = (floor(Year/10)*10))
 ```
 
 ### Test Plots: Year-Term Bar Polar Charts
