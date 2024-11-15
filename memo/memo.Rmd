@@ -17,6 +17,7 @@ library(sf)
 library(visdat)
 library(naniar)
 library(UpSetR)
+library(RColorBrewer)
 
 Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.csv")
 Tidy_Mapped_Clean <- read.csv("/cloud/project/data/Tidy_Mapped_Clean.csv")
@@ -407,6 +408,55 @@ ggplot(aes(x = Decade,
  geom_bar(position = "stack") +
   facet_wrap(~Location_Type, nrow = 3, scales = "free_y") +
   scale_fill_viridis_d()
+```
+```{r test-plot-11}
+Top_10_Sites <- Internship_Leaflet_Official_Complete %>% 
+  filter(!is.na(Internship.Site) & Internship.Site != "Prior Fulfillment of Internship Requirement") %>% 
+  mutate(Internship.Site = case_when( 
+    Internship.Site %in% c("MDI Biological Laboratory", "Mount Desert Island Biological Laboratory") ~ "MDI Biological Laboratory",
+    TRUE ~ Internship.Site
+  )) %>% 
+  mutate(Internship.Site = case_when( 
+    Internship.Site %in% c("The Jackson Laboratory", "Jackson Laboratory") ~ "Jackson Laboratory",
+    TRUE ~ Internship.Site
+  )) %>% 
+  mutate(Internship.Site = str_squish(Internship.Site)) %>% 
+mutate(Internship.Site = case_when( 
+    Internship.Site %in% c("YMCA Camp Jordan", "YMCA Camp Erdman", "YMCA", "Mount Desert Island YMCA", "MDI YMCA", "Bar Harbor YMCA", "Bangor YMCA Camp Jordan") ~ "YMCA",
+    TRUE ~ Internship.Site
+  )) %>% 
+  mutate(Internship.Site = str_squish(Internship.Site)) %>% 
+mutate(Internship.Site = case_when( 
+    Internship.Site %in% c("Summer Field Studies College of the Atlantic", "Summer Field Studies at COA", "Summer Field Studies") ~ "Summer Field Studies",
+    TRUE ~ Internship.Site
+  )) %>% 
+  mutate(Internship.Site = str_squish(Internship.Site)) %>%
+mutate(Internship.Site = case_when( 
+    Internship.Site %in% c("Mount Desert Island Hospital", "MDI Hospital") ~ "Mount Desert Island Hospital",
+    TRUE ~ Internship.Site
+  )) %>% 
+  mutate(Internship.Site = str_squish(Internship.Site)) %>%
+mutate(Internship.Site = case_when( 
+    Internship.Site %in% c("Island Reaserch Center", "Alice Eno Field Station on Great Duck Island", "Alice Eno Research Center", "Great Duck Island", "Alice Eno Biological Station and Mount Desert Rock") ~ "Great Duck Island Research Center",
+    TRUE ~ Internship.Site
+  )) %>% 
+  mutate(Internship.Site = str_squish(Internship.Site)) %>%
+mutate(Internship.Site = case_when( 
+    Internship.Site %in% c("Acadia National Park Resource Management", "Acadia National Park") ~ "Acadia National Park",
+    TRUE ~ Internship.Site
+  )) %>% 
+  mutate(Internship.Site = str_squish(Internship.Site)) %>%
+  count(Internship.Site) %>% 
+  arrange(desc(n)) %>% 
+  slice_head(n = 10)
+
+Top_10_Sites %>% 
+  ggplot(aes(x = reorder(Internship.Site, n), y = n, fill = Internship.Site)) + 
+  geom_bar(stat = "identity") + 
+  theme_minimal() +
+  theme(legend.position = "none") +
+  coord_flip() +
+  
 ```
 
 
