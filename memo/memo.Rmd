@@ -463,9 +463,14 @@ Top_10_Sites %>%
 
 ### Plot 1: Bar Chart of Term ... more here
 
-```{r plot-1}
-Tidy_Time_Summary %>% 
-  ggplot(aes(x = Term, y = count, fill = as.numeric(Year))) + 
+```{r plot-1-test}
+Internship_Leaflet_Official_Complete %>% 
+  drop_na(Term) %>% 
+  drop_na(Decade) %>% 
+  group_by(Decade, Term) %>%
+  summarise(count = n()) %>%
+  ungroup() %>% 
+  ggplot(aes(x = Term, y = count, fill = as.numeric(Decade))) + 
   geom_bar(stat = "identity", position = "stack") + 
   coord_polar(start = 0) + 
   labs(
@@ -482,6 +487,74 @@ Tidy_Time_Summary %>%
 ggsave("term-polar-chart.png", width = 4, height = 4)
 
 ggsave("term-polar-chart-wide.png", width = 6, height = 4)
+```
+
+```{r plot-1-test-1}
+Internship_Leaflet_Official_Complete %>% 
+  drop_na(Term) %>% 
+  drop_na(Decade) %>% 
+  group_by(Decade, Term) %>%
+  summarise(count = n()) %>%
+  ungroup() %>% 
+  ggplot(aes(x = Term, y = count, fill = as.numeric(Decade))) + 
+  geom_bar(stat = "identity", position = "stack") + 
+  labs(
+    title = "Student Internship Year Breakup by Term",
+    subtitle = "Data from College of the Atlantic (1970 to 2023)",
+    x = "Term",
+    fill = "Year") + 
+  theme_minimal() +  
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        legend.key.size = unit(0.7, "lines")) +
+  scale_fill_viridis_c(direction = -1)
+```
+
+```{r plot-1-test-2}
+Internship_Leaflet_Official_Complete %>% 
+  drop_na(Term) %>% 
+  drop_na(Decade) %>% 
+  group_by(Decade, Term) %>%
+  summarise(count = n()) %>%
+  ungroup() %>% 
+ggplot(aes(x = Term, y = count, fill = as.numeric(Decade))) + 
+  geom_bar(stat = "identity", position = "fill") + 
+  labs(
+    title = "Student Internship Year Breakup by Term",
+    subtitle = "Data from College of the Atlantic (1970 to 2023)",
+    x = "Term",
+    fill = "Year") + 
+  theme_minimal() +  
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        legend.key.size = unit(0.7, "lines")) +
+  scale_fill_viridis_c(direction = -1)
+```
+
+```{r plot-1-final}
+Internship_Leaflet_Official_Complete %>% 
+  drop_na(Term) %>% 
+  drop_na(Decade) %>% 
+  group_by(Decade, Term) %>%
+  summarise(count = n()) %>%
+  ungroup() %>% 
+  mutate(Term = fct_relevel(Term, "Fall", "Winter", "Spring", "Summer")) %>%  
+ggplot(aes(x = Decade, y = count, fill = as.numeric(Decade))) + 
+  geom_bar(stat = "identity", position = "stack") + 
+  facet_wrap(~Term, nrow = 4, scales = "free_y") + 
+  theme_minimal() +  
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        legend.key.size = unit(0.7, "lines")) +
+  scale_fill_viridis_c(direction = -1) +
+  coord_flip() +
+  theme(legend.position = "top") + 
+  guides(fill = guide_legend(nrow = 1, byrow = TRUE)) +
+  labs(
+    y = "Number of Internships", 
+    title = "Student Internship Year Breakup by Term",
+    subtitle = "Data from College of the Atlantic (1970 to 2023)",
+    fill = "Decade")
 ```
 
 ### Plot 2: Leaflet Map of Internships by Decade
