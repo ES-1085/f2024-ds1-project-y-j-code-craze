@@ -18,6 +18,8 @@ library(visdat)
 library(naniar)
 library(UpSetR)
 library(RColorBrewer)
+library(ggthemes)
+library(gapminder)
 
 Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.csv")
 Tidy_Mapped_Clean <- read.csv("/cloud/project/data/Tidy_Mapped_Clean.csv")
@@ -367,7 +369,6 @@ ggplot(aes(x = Decade, y = count, fill = as.numeric(Decade))) +
   labs(
     y = "Number of Internships", 
     title = "Student Internship Year Breakup by Term",
-    subtitle = "Data from College of the Atlantic (1970 to 2023)",
     fill = "Decade")
 ```
 
@@ -420,7 +421,11 @@ Top_10_Sites %>%
   theme_minimal() +
   theme(legend.position = "none") +
   coord_flip() + 
-  scale_fill_viridis_d(direction = -1)
+  scale_fill_viridis_d(direction = -1) +
+  labs(title = "Top 10 Internships Sites (Highest Frequency)",
+       subtitle = "Data from 1970 to 2023",
+       y = "Number of Internships") +
+  theme(axis.title.y = element_blank())
 ```
 
 ### Plot 3:
@@ -431,8 +436,26 @@ Internship_Leaflet_Official_Complete %>%
   ggplot(aes(x = Year, y = n, colour = Location_Type)) +
   geom_line(size = 0.8) +
   theme_minimal() +
-  labs(x = "Year", y = "Count", title = "Counts of Internship Locations by Year and Type") + 
-  scale_colour_viridis_d()
+  labs(title = "Number of Internships per Year by Location Type",
+       subtitle = "Local = On Mount Desert Island, Domestic = Within the USA, International = Outside the USA",
+       x = "Year", 
+       y = "Number of Internships",
+       colour = "Type of Location") + 
+  scale_colour_viridis_d() +
+  geom_vline(xintercept = 2019, linetype = "dotted", colour = "red") +
+  geom_vline(xintercept = 2022, linetype = "dotted",colour = "red") +
+  annotate("rect",
+           xmin = 2019,
+           xmax = 2022,
+           ymin = 0,
+           ymax = 45,
+           alpha = 0.2,
+           fill = "red") +
+  geom_text(aes(x = 2010, y = 40),
+            label = "Drop due to COVID",
+            colour = "black",
+            family = "Times New Roman",
+            size = 4.5)
 ```
 
 ### Plot 2: Leaflet Map of Internships by Decade
