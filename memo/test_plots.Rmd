@@ -165,12 +165,6 @@ mutate(region = str_extract(Location, "(?<=, ).+$"),
       TRUE ~ "International"))
 ```
 
-
-
-
-
-
-
 ### Test Plots: Year-Term Bar Polar Charts
 
 Polar chart of terms by year: 
@@ -286,6 +280,29 @@ ggplot(aes(x = Term, y = count, fill = as.numeric(Decade))) +
   scale_fill_viridis_c(direction = -1)
 ```
 
+### Test Plots: Decade-Location Type Plots
+
+```{r test-plot-lucky-number-7}
+Internship_Leaflet_Official_Complete %>% 
+  filter(Decade != "NA") %>% 
+  ggplot(aes(x = Location_Type,
+             fill = Location_Type)) +
+ geom_bar() +
+   facet_wrap(~Decade) +
+  scale_fill_viridis_d()
+```
+This one is interesting to look at, but there is too much going on. 
+
+```{r test-plot-number-8}
+Internship_Leaflet_Official_Complete %>% 
+  ggplot(aes(y = Year,
+         fill = Location_Type)) + 
+  geom_bar(position = "fill") + 
+  scale_fill_viridis_d()
+```
+
+This one almost made it onto our poster, but we figured that it would be more interesting to have more variation in our visualizations (we have so many bar charts). 
+
 ```{r test-plot-3}
 Internship_Leaflet_Official_Complete %>%
 ggplot(aes(x = Decade,
@@ -294,3 +311,77 @@ ggplot(aes(x = Decade,
   facet_wrap(~Location_Type, nrow = 3, scales = "free_y") +
   scale_fill_viridis_d()
 ```
+
+### Test Plots: Old Leaflet Map
+
+All internships without all of the lat/lons entered:
+
+```{r test-plot-4}
+leaflet(Tidy_Mapped_Clean) %>%
+  addTiles() %>%
+  setView(lng = mean(Tidy_Mapped_Clean$Longitude, na.rm = TRUE), 
+          lat = mean(Tidy_Mapped_Clean$Latitude, na.rm = TRUE), 
+          zoom = 2) %>%
+  addMarkers(~Longitude, ~Latitude,
+             clusterOptions = markerClusterOptions(),
+             popup = ~paste(Internship.Site, "<br>", Location))
+```
+
+Same thing, but with the decade layers: 
+
+```{r test-plot-3}
+#building leaflet
+#Things to change: decade, clustering (for later), sliding scale
+pal <- colorFactor(palette = c("red", "orange", "yellow", "green", "blue", "purple"), domain = Tidy_Mapped_Clean$Decade)
+
+leaflet(Tidy_Mapped_Clean) %>%
+  addTiles() %>%
+  setView(lng = mean(Tidy_Mapped_Clean$Longitude, na.rm = TRUE), 
+          lat = mean(Tidy_Mapped_Clean$Latitude, na.rm = TRUE), 
+          zoom = 2) %>%
+  addCircleMarkers(data = Tidy_Mapped_Clean %>% filter(Decade == "1970"),
+                   ~Longitude, 
+                   ~Latitude, 
+                   color = ~pal(Decade),
+                   group = "1970s",
+                   popup = ~paste(Internship.Site, "<br>", Location),
+                   clusterOptions = markerClusterOptions()) %>% 
+  addCircleMarkers(data = Tidy_Mapped_Clean %>% filter(Decade == "1980"),
+                   ~Longitude, 
+                   ~Latitude, 
+                   color = ~pal(Decade),
+                   group = "1980s",
+                   popup = ~paste(Internship.Site, "<br>", Location),
+                   clusterOptions = markerClusterOptions()) %>% 
+  addCircleMarkers(data = Tidy_Mapped_Clean %>% filter(Decade == "1990"),
+                   ~Longitude, 
+                   ~Latitude, 
+                   color = ~pal(Decade),
+                   group = "1990s",
+                   popup = ~paste(Internship.Site, "<br>", Location),
+                   clusterOptions = markerClusterOptions()) %>% 
+  addCircleMarkers(data = Tidy_Mapped_Clean %>% filter(Decade == "2000"),
+                   ~Longitude, 
+                   ~Latitude, 
+                   color = ~pal(Decade),
+                   group = "2000s",
+                   popup = ~paste(Internship.Site, "<br>", Location),
+                   clusterOptions = markerClusterOptions()) %>% 
+  addCircleMarkers(data = Tidy_Mapped_Clean %>% filter(Decade == "2010"),
+                   ~Longitude, 
+                   ~Latitude, 
+                   color = ~pal(Decade),
+                   group = "2010s",
+                   popup = ~paste(Internship.Site, "<br>", Location),
+                   clusterOptions = markerClusterOptions()) %>% 
+  addCircleMarkers(data = Tidy_Mapped_Clean %>% filter(Decade == "2020"),
+                   ~Longitude, 
+                   ~Latitude, 
+                   color = ~pal(Decade),
+                   group = "2020s",
+                   popup = ~paste(Internship.Site, "<br>", Location),
+                   clusterOptions = markerClusterOptions()) %>% 
+  addLayersControl(overlayGroups = c("1970s", "1980s", "1990s", "2000s", "2010s", "2020s"),
+                   options = layersControlOptions())
+```
+
