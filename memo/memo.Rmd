@@ -4,8 +4,6 @@ author: "Y & J Code Craze"
 output: html_document
 ---
 
-This document should contain a detailed account of the data clean up for your data and the design choices you are making for your plots. For instance you will want to document choices you've made that were intentional for your graphic, e.g. color you've chosen for the plot. Think of this document as a code script someone can follow to reproduce the data cleaning steps and graphics in your handout.
-
 ```{r load-packages, message = FALSE}
 library(tidyverse)
 library(broom)
@@ -152,7 +150,7 @@ Internship_Leaflet_Official_Complete <- Internship_Leaflet_Official_Complete %>%
 
 ### Step 4: Create Local, Domestic, and International Catagories
 
-We wanted to compare local, domestic, and international internships across multiple decades. Most internships were formatted "City, US state" or "City, Country", but there were also inconsistencies in spelling and instances of inconsistent abbreviation use. So we went into Excel and changed entries to match the "City, US State" or "City, Country" format. Canadian state names were changed to "City, Canada." Entries that were formatted "City, Non-US State, Country" were changed to "City, Country." We then separated the state or country at the comma. Anything with a US state after the comma was labeled "Domestic" and any country after the comma was labeled "International. All internships located in towns on MDI were counted as local. This was the easiest way to categorize local internships instead of having to decide which off-island towns/areas counted as local.
+We wanted to compare local, domestic, and international internships across multiple decades. Most internships were formatted "City, US state" or "City, Country", but there were also inconsistencies in spelling and instances of inconsistent abbreviation use. So we went into Excel and changed entries to match the "City, US State" or "City, Country" format. Canadian state names were changed to "City, Canada." Entries that were formatted "City, Non-US State, Country" were changed to "City, Country." We then separated the state or country at the comma. Anything with a US state after the comma was labeled "Domestic" and any country after the comma was labeled "International". All internships located in towns on MDI were counted as local. This was the easiest way to categorize local internships instead of having to decide which off-island towns/areas should be considered local.
 
 ```{r create-location-type}
 us_states <- c("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
@@ -173,15 +171,9 @@ mutate(region = str_extract(Location, "(?<=, ).+$"),
       TRUE ~ "International"))
 ```
 
-<<<<<<< HEAD
 ### Step 5 (not shown here): Manually Enter Missing lat/lon Variables
 
 Many of the locations in our data set were missing variables for latitude and longitude. Because r uses these variables to create leaflet maps, we couldn't visualize about half of the internships in our data set. Yeshaya first used Chat GPT to fill in the missing values. Chat GPT defaulted many of the missing locations to Bar Harbor. Yeshaya then went in and manually replaced all of the missing coordinates that Chat GPT couldn't find. There are still 1 or 2 internships that have coordinates that don't match the locations (they have Bar Harbor coordinates).
-=======
-### Step 5 (not shown here): Manually Enter Missing lat/lon Variables 
-
-Many of the locations in our data set were missing variables for latitude and longitude. Because r uses these variables to create leaflet maps, we couldn't visualize about half of the internships in our data set. Yeshaya first used Chat GPT to fill in the missing values. Chat GPT defaulted many of the missing locations to Bar Harbor. Yeshaya then went in and manually replaced all of the missing coordinates that Chat GPT couldn't find. There are still 1 or 2 internships that have coordinates that don't match the locations (they have Bar Harbor coordinates).  
->>>>>>> ced8e2337d66d60680a203f63d2d3efd48a0f028
 
 ### ggsave example for saving plots
 

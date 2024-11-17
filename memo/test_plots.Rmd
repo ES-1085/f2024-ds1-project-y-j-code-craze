@@ -214,7 +214,7 @@ Tidy_Time_Summary %>%
 
 Same idea, but split up by decade instead of year: 
 
-```{r plot-1-test}
+```{r test-plot-3}
 Internship_Leaflet_Official_Complete %>% 
   drop_na(Term) %>% 
   drop_na(Decade) %>% 
@@ -238,7 +238,7 @@ Internship_Leaflet_Official_Complete %>%
 
 More variations, but make it a bar plot: 
 
-```{r plot-1-test-1}
+```{r test-plot-4}
 Internship_Leaflet_Official_Complete %>% 
   drop_na(Term) %>% 
   drop_na(Decade) %>% 
@@ -259,7 +259,7 @@ Internship_Leaflet_Official_Complete %>%
   scale_fill_viridis_c(direction = -1)
 ```
 
-```{r plot-1-test-2}
+```{r test-plot-5}
 Internship_Leaflet_Official_Complete %>% 
   drop_na(Term) %>% 
   drop_na(Decade) %>% 
