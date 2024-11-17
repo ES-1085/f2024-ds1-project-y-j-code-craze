@@ -238,6 +238,8 @@ Internship_Leaflet_Official_Complete %>%
 
 More variations, but make it a bar plot: 
 
+Harder to compare decades, but it does show the overall trends in term data. It's also not as cool as the polar chart.  
+
 ```{r test-plot-4}
 Internship_Leaflet_Official_Complete %>% 
   drop_na(Term) %>% 
@@ -258,6 +260,8 @@ Internship_Leaflet_Official_Complete %>%
         legend.key.size = unit(0.7, "lines")) +
   scale_fill_viridis_c(direction = -1)
 ```
+
+It was harder to compare across decades and this doesn't show how many more internships happen in the summer
 
 ```{r test-plot-5}
 Internship_Leaflet_Official_Complete %>% 
@@ -282,7 +286,9 @@ ggplot(aes(x = Term, y = count, fill = as.numeric(Decade))) +
 
 ### Test Plots: Decade-Location Type Plots
 
-```{r test-plot-lucky-number-7}
+We thought this wasn't the best way to compare changes over each decade.  
+
+```{r test-plot-6}
 Internship_Leaflet_Official_Complete %>% 
   filter(Decade != "NA") %>% 
   ggplot(aes(x = Location_Type,
@@ -291,9 +297,10 @@ Internship_Leaflet_Official_Complete %>%
    facet_wrap(~Decade) +
   scale_fill_viridis_d()
 ```
+
 This one is interesting to look at, but there is too much going on. 
 
-```{r test-plot-number-8}
+```{r test-plot-7}
 Internship_Leaflet_Official_Complete %>% 
   ggplot(aes(y = Year,
          fill = Location_Type)) + 
@@ -303,7 +310,7 @@ Internship_Leaflet_Official_Complete %>%
 
 This one almost made it onto our poster, but we figured that it would be more interesting to have more variation in our visualizations (we have so many bar charts). 
 
-```{r test-plot-3}
+```{r test-plot-8}
 Internship_Leaflet_Official_Complete %>%
 ggplot(aes(x = Decade,
              fill = Location_Type)) +
@@ -314,9 +321,9 @@ ggplot(aes(x = Decade,
 
 ### Test Plots: Old Leaflet Map
 
-All internships without all of the lat/lons entered:
+All internships without all of the lat/lons entered (pre-Yeshaya-magic):
 
-```{r test-plot-4}
+```{r test-leaflet-plot-1}
 leaflet(Tidy_Mapped_Clean) %>%
   addTiles() %>%
   setView(lng = mean(Tidy_Mapped_Clean$Longitude, na.rm = TRUE), 
@@ -329,7 +336,7 @@ leaflet(Tidy_Mapped_Clean) %>%
 
 Same thing, but with the decade layers: 
 
-```{r test-plot-3}
+```{r test-leaflet-plot-2}
 #building leaflet
 #Things to change: decade, clustering (for later), sliding scale
 pal <- colorFactor(palette = c("red", "orange", "yellow", "green", "blue", "purple"), domain = Tidy_Mapped_Clean$Decade)
