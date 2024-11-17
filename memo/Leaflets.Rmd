@@ -1,0 +1,83 @@
+---
+output: html_document
+---
+
+```{r load-packages}
+library(tidyverse)
+library(leaflet)
+library(colorspace)
+Internship_Leaflet_Official_Complete <- read_csv("/cloud/project/data/Internship_Leaflet_Official - Complete.csv")
+```
+
+```{r create-decade}
+Internship_Leaflet_Official_Complete <- Internship_Leaflet_Official_Complete %>% 
+  mutate(Decade = (floor(Year/10)*10))
+```
+
+### Explore All Internships! 
+
+```{r leaflet-cluster}
+leaflet(Internship_Leaflet_Official_Complete) %>%
+  addTiles() %>%
+  setView(lng = mean(Internship_Leaflet_Official_Complete$Longitude, na.rm = TRUE), 
+          lat = mean(Internship_Leaflet_Official_Complete$Latitude, na.rm = TRUE), 
+          zoom = 2) %>%
+  addMarkers(~Longitude, ~Latitude, 
+             clusterOptions = markerClusterOptions(),
+             popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year))
+```
+
+### Explore Internships by Decade!
+
+```{r leaflet-by-decade}
+pal <- colorFactor(palette = c("red", "orange", "yellow", "green", "blue", "purple"), domain = Internship_Leaflet_Official_Complete$Decade)
+
+leaflet(Internship_Leaflet_Official_Complete) %>%
+  addTiles() %>%
+  setView(lng = mean(Internship_Leaflet_Official_Complete$Longitude, na.rm = TRUE), 
+          lat = mean(Internship_Leaflet_Official_Complete$Latitude, na.rm = TRUE), 
+          zoom = 2) %>%
+  addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "1970"),
+                   ~Longitude, 
+                   ~Latitude, 
+                   color = ~pal(Decade),
+                   group = "1970s",
+                   popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year)) %>% 
+  addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "1980"),
+                   ~Longitude, 
+                   ~Latitude, 
+                   color = ~pal(Decade),
+                   group = "1980s",
+                   popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year)) %>% 
+  addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "1990"),
+                   ~Longitude, 
+                   ~Latitude, 
+                   color = ~pal(Decade),
+                   group = "1990s",
+                   popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year)) %>% 
+  addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "2000"),
+                   ~Longitude, 
+                   ~Latitude, 
+                   color = ~pal(Decade),
+                   group = "2000s",
+                   popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year)) %>% 
+  addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "2010"),
+                   ~Longitude, 
+                   ~Latitude, 
+                   color = ~pal(Decade),
+                   group = "2010s",
+                   popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year)) %>% 
+  addCircleMarkers(data = Internship_Leaflet_Official_Complete %>% filter(Decade == "2020"),
+                   ~Longitude, 
+                   ~Latitude, 
+                   color = ~pal(Decade),
+                   group = "2020s",
+                   popup = ~paste(Internship.Site, "<br>", Location, "<br>", Year)) %>% 
+  addLayersControl(overlayGroups = c("1970s", "1980s", "1990s", "2000s", "2010s", "2020s")) %>%
+  addLegend("bottomright", 
+            pal = pal, 
+            values = Internship_Leaflet_Official_Complete$Decade[!is.na(Internship_Leaflet_Official_Complete$Decade)],
+            title = "Decade",
+            labFormat = labelFormat(prefix = ""))
+
+```

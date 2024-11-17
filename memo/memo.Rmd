@@ -435,3 +435,7 @@ Internship_Leaflet_Official_Complete %>%
   scale_colour_viridis_d()
 ```
 
+### Plot 2: Leaflet Map of Internships by Decade
+
+### Plot 3: Top 10 Internships
+
