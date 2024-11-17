@@ -30,7 +30,7 @@ Internship_Leaflet_Official_Complete <- read_csv("/cloud/project/data/Internship
 
 ### Step 1: Tidy the Term Column
 
-#### Step 1 a.) Change Entries with unknown term data to "NA" and unnesesary remove spaces before and after an entry 
+#### Step 1 a.) Change Entries with unknown term data to "NA" and unnesesary remove spaces before and after an entry
 
 ```{r clear-unknown-term-data}
 Internship_Data_Untidy %>% 
@@ -41,7 +41,7 @@ Internship_Data_Untidy %>%
 
 #### Step 1 b.) Ensure all terms corespond to one COA term.
 
-Because we are using the last recorded year from the "year" column, we are also using the last recorded term. The last term of each entry should correspond to the year the internship was completed. 
+Because we are using the last recorded year from the "year" column, we are also using the last recorded term. The last term of each entry should correspond to the year the internship was completed.
 
 ```{r filtering-for-term}
 Tidy_Term <- Internship_Data_Untidy %>% 
@@ -61,19 +61,17 @@ Tidy_Term %>%
   summarise(count = n())
 ```
 
-### Step 2: Tidy the Year Column (All work applied to data frame "Tidy_Term")
+###Step 2: Tidy the Year Column (All work applied to data frame "Tidy_Term")
 
-#### Step 2 a.) Check for all unique variables within the Year coloumn 
+#### Step 2 a.) Check for all unique variables within the Year coloumn
 
 ```{r year-variable-check}
-
 unique(Tidy_Term$Year)
 ```
 
 #### Step 2 b.) Ensure all variables follow same format
 
-The format is simply to state the year as a 4 digit integer. "XXXX". 
-We were instructed by Jeffry to use the latest year for entries that span across multiple years.
+The format is simply to state the year as a 4 digit integer. "XXXX". We were instructed by Jeffry to use the latest year for entries that span across multiple years.
 
 ```{r mutating-unique-years}
 Tidy_Time <- Tidy_Term %>% 
@@ -141,23 +139,20 @@ Tidy_Time %>%
   summarise(count = n())
 ```
 
-Yay! it's all tidy! 
+Yay! it's all tidy!
 
-### Step 3: Create a Decade Variable 
+### Step 3: Create a Decade Variable
 
-We thought that it would be easier to visualize change over time if we used decades instead of years. We wanted to ensure that our plots were readable. 
-Because this data set is growing, there aren't very many entries from the 2020s (specifically 2023). 
+We thought that it would be easier to visualize change over time if we used decades instead of years. We wanted to ensure that our plots were readable. Because this data set is growing, there aren't very many entries from the 2020s (specifically 2023).
 
 ```{r create-decade-variable}
 Internship_Leaflet_Official_Complete <- Internship_Leaflet_Official_Complete %>% 
   mutate(Decade = (floor(Year/10)*10))
 ```
 
-### Step 4: Create Local, Domestic, and International Catagories 
+### Step 4: Create Local, Domestic, and International Catagories
 
-We wanted to compare local, domestic, and international internships across multiple decades.
-Most internships were formatted "City, US state" or "City, Country." We went into excel and changed entries to match this format. Canadian state names were changed to "City, Canada." Entries that were formatted "City, Non-US State, Country" were changed to "City, Country." We then separated the state or country at the comma. Anything with a US state after the comma was labeled "Domestic" and any country after the comma was labeled "International. 
-All internships located in towns on MDI were counted as local. This was the easiest way to categorize local internships rather than having to decide which off-island towns/areas counted as local.
+We wanted to compare local, domestic, and international internships across multiple decades. Most internships were formatted "City, US state" or "City, Country", but there were also inconsistencies in spelling and instances of inconsistent abbreviation use. So we went into Excel and changed entries to match the "City, US State" or "City, Country" format. Canadian state names were changed to "City, Canada." Entries that were formatted "City, Non-US State, Country" were changed to "City, Country." We then separated the state or country at the comma. Anything with a US state after the comma was labeled "Domestic" and any country after the comma was labeled "International. All internships located in towns on MDI were counted as local. This was the easiest way to categorize local internships instead of having to decide which off-island towns/areas counted as local.
 
 ```{r create-location-type}
 us_states <- c("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
@@ -178,8 +173,9 @@ mutate(region = str_extract(Location, "(?<=, ).+$"),
       TRUE ~ "International"))
 ```
 
-### Step 5 (not shown here): Manually Enter Missing lat/lon Variables 
-Many of the locations in our data set were missing variables for latitude and longitude. Because r uses these variables to create leaflet maps, we couldn't visualize about half of the internships in our data set. Yeshaya first used Chat GPT to fill in the missing values. Chat GPT defaulted many of the missing locations to Bar Harbor. Yeshaya then went in and manually replaced all of the missing coordinates that Chat GPT couldn't find. There are still 1 or 2 internships that have coordinates that don't match the locations (they have Bar Harbor coordinates).  
+### Step 5 (not shown here): Manually Enter Missing lat/lon Variables
+
+Many of the locations in our data set were missing variables for latitude and longitude. Because r uses these variables to create leaflet maps, we couldn't visualize about half of the internships in our data set. Yeshaya first used Chat GPT to fill in the missing values. Chat GPT defaulted many of the missing locations to Bar Harbor. Yeshaya then went in and manually replaced all of the missing coordinates that Chat GPT couldn't find. There are still 1 or 2 internships that have coordinates that don't match the locations (they have Bar Harbor coordinates).
 
 ### ggsave example for saving plots
 
@@ -203,18 +199,42 @@ ggsave("example-starwars.png", width = 4, height = 4)
 ggsave("example-starwars-wide.png", width = 6, height = 4)
 ```
 
+## Plot Creation
 
+### Theme Designing
+
+```{r theme-design}
+yj_theme <- theme_minimal() + 
+  theme(plot.title = element_text(family = "Times New Roman",
+                                  face = "bold",
+                                  colour = "#342758",
+                                  size = 16),
+        plot.subtitle = element_text(family = "Times New Roman",
+                                     face = "italic",
+                                     colour = "#512663",
+                                     size = 13),
+        axis.title = element_text(family = "Times New Roman",
+                                  colour = "deepskyblue4",
+                                  13),
+        legend.title = element_text(family = "Times New Roman",
+                                  colour = "deepskyblue4",
+                                  13),
+        axis.text = element_text(family = "Times New Roman"),
+        strip.text = element_text(family = "Times New Roman"),
+        legend.text = element_text(family = "Times New Roman")
+        )
+```
 
 
 ### Plot 1: Amount of Internships per Term by Decade
 
 We chose a faceted bar chart to visualize internship terms over time because we wanted to be able to easily compare each decade by term. We also wanted to show that summer is the most popular term for internships. This was the most readable visualization to communicate our goals.
 
-We flipped our visualization horizontally so that it would be easier to compare the amount of internships between decades. 
+We flipped our visualization horizontally so that it would be easier to compare the amount of internships between decades.
 
-There is only one column of graphs because we wanted to make it easier to compare the amount of internships between terms. We also wanted to make sure that the graphs have enough space to show the count per term. 
+There is only one column of graphs because we wanted to make it easier to compare the amount of internships between terms. We also wanted to make sure that the graphs have enough space to show the count per term.
 
-We decided to use a colorblind friendly color scheme in our plots so that they could be accessible for a wide audience. We used the scale_fill_viridis feature to do this.  
+We decided to use a colorblind friendly color scheme in our plots so that they could be accessible for a wide audience. We used the scale_fill_viridis feature to do this.
 
 We wanted our legend to be readable, so we flipped it horizontally and separated the colors by decade.
 
@@ -229,7 +249,7 @@ Internship_Leaflet_Official_Complete %>%
 ggplot(aes(x = Decade, y = count, fill = as.numeric(Decade))) + 
   geom_bar(stat = "identity", position = "stack") + 
   facet_wrap(~Term, nrow = 4, scales = "free_y") + 
-  theme_minimal() +  
+  yj_theme +  
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank(),
         legend.key.size = unit(0.7, "lines")) +
@@ -245,7 +265,7 @@ ggplot(aes(x = Decade, y = count, fill = as.numeric(Decade))) +
 
 ### Plot 2: Top 10 Internships Done by COA Students
 
-Because it was too difficult to sort each internship into alumni industries, we decided to see the most common organizations COA students interned for. 
+Because it was too difficult to sort each internship into alumni industries, we decided to see the most common organizations COA students interned for.
 
 ```{r plot-2-final}
 Top_10_Sites <- Internship_Leaflet_Official_Complete %>% 
@@ -291,7 +311,7 @@ mutate(Internship.Site = case_when(
 Top_10_Sites %>% 
   ggplot(aes(x = reorder(Internship.Site, n), y = n, fill = reorder(Internship.Site, n))) +
   geom_bar(stat = "identity") + 
-  theme_minimal() +
+  yj_theme +
   theme(legend.position = "none") +
   coord_flip() + 
   scale_fill_viridis_d(direction = -1) +
@@ -308,9 +328,9 @@ Internship_Leaflet_Official_Complete %>%
   count(Year, Location_Type) %>%
   ggplot(aes(x = Year, y = n, colour = Location_Type)) +
   geom_line(size = 0.8) +
-  theme_minimal() +
+  yj_theme +
   labs(title = "Number of Internships per Year by Location Type",
-       subtitle = "Local = On Mount Desert Island, Domestic = Within the USA, International = Outside the USA",
+       subtitle = "Local = On MDI; Domestic = Within the USA; International = Outside the USA",
        x = "Year", 
        y = "Number of Internships",
        colour = "Type of Location") + 
@@ -331,7 +351,7 @@ Internship_Leaflet_Official_Complete %>%
             size = 4.5)
 ```
 
-### Plot 4.1: Leaflet Map of All Internships 
+### Plot 4.1: Leaflet Map of All Internships
 
 Explain
 
