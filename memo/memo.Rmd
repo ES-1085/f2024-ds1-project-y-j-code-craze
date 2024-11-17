@@ -36,9 +36,9 @@ Internship_Data_Untidy %>%
   mutate(Term = str_squish(Term))
 ```
 
-#### Step 1 b.) Ensure all terms fall under corespond to one COA term.
+#### Step 1 b.) Ensure all terms corespond to one COA term.
 
-Because we are using the last recorded year from the "year" column, we are also using the last recorded term. The last term of each entry should correspond to the year the internship was completed 
+Because we are using the last recorded year from the "year" column, we are also using the last recorded term. The last term of each entry should correspond to the year the internship was completed. 
 
 ```{r filtering-for-term}
 Tidy_Term <- Internship_Data_Untidy %>% 
@@ -59,14 +59,14 @@ Tidy_Term %>%
 
 ### Step 2: Tidy the Year Column (All work applied to data frame "Tidy_Term")
 
-### Step 2 a.) Check for all unique variables within the Year coloumn 
+#### Step 2 a.) Check for all unique variables within the Year coloumn 
 
 ```{r year-variable-check}
 
 unique(Tidy_Term$Year)
 ```
 
-### Step 2 b.) Ensure all variables follow same format
+#### Step 2 b.) Ensure all variables follow same format
 
 The format is simply to state the year as a 4 digit integer. "XXXX". 
 We were instructed by Jeffry to use the latest year for entries that span across multiple years.
@@ -129,24 +129,27 @@ mutate(Year = case_when(
 ))
 ```
 
-### Step 2 c.) Double check unique terms
+#### Step 2 c.) Double check unique terms
 
 ```{r year-variable-recheck}
 Tidy_Time %>% 
   group_by(Year) %>%
   summarise(count = n())
 ```
-yay! it's all tidy! 
+Yay! it's all tidy! 
 
 ### Step 3 Create a Decade Variable 
-We wanted to layer our leaflet maps by decade. 
-```{r create-decade}
-Tidy_Mapped_Clean <- Tidy_Mapped_Clean %>% 
+We thought that it would be easier to visualize change over time if we used decades instead of years. We also wanted to ensure that our plots were readable. Because this data set is growing, there is not very much information from the 2020s. Internships have not decreased on the last 4 years (as far as we know), this is just what is availible in our dataset. 
+
+```{r create-decade-variable}
+Internship_Leaflet_Official_Complete <- Internship_Leaflet_Official_Complete %>% 
   mutate(Decade = (floor(Year/10)*10))
 ```
 
 ### Step 4 Create Local, Domestic, and International Catagories 
-We wanted to compare each category of internship by decade.
+We wanted to compare local, domestic, and international internships across multiple decades.
+Most internships were formatted "City, US state" or "City, Country." We went into excel and changed entries to match this format. Canadian state names were changed to "City, Canada." Entries that were formatted "City, Non-US State, Country" were changed to "City, Country." We then separated the state or country at the comma. Anything with a US state after the comma was labeled "Domestic" and any country after the comma was labeled "International. 
+All internships located in towns on MDI were counted as local. This was the easiest way to categorize local internships rather than having to decide which off-island towns/areas counted as local.
 ```{r create-location-type}
 us_states <- c("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
                "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", 
@@ -189,59 +192,7 @@ ggsave("example-starwars.png", width = 4, height = 4)
 ggsave("example-starwars-wide.png", width = 6, height = 4)
 ```
 
-### Step 3 Create a Decade Variable 
-We wanted to layer our leaflet maps by decade. 
-```{r create-decade-variable}
-Tidy_Mapped_Clean <- Tidy_Mapped_Clean %>% 
-  mutate(Decade = (floor(Year/10)*10))
 
-Internship_Leaflet_Official_Complete <- Internship_Leaflet_Official_Complete %>% 
-  mutate(Decade = (floor(Year/10)*10))
-```
-
-### Test Plots: Year-Term Bar Polar Charts
-
-```{r test-plot-1}
-# Summarise the data by Year and Term
-Tidy_Time_Summary <- Tidy_Time %>%
-  drop_na(Term) %>% 
-  drop_na(Year) %>% 
-  group_by(Year, Term) %>%
-  summarise(count = n()) %>%
-  ungroup()
-
-Tidy_Time_Summary %>% 
-  ggplot(aes(x = Year, y = count, fill = fct_relevel(Term, c("Summer", "Spring", "Winter", "Fall")))) + 
-  geom_bar(stat = "identity", position = "stack") + 
-  coord_polar(start = 0) + 
-  labs(
-    title = "Student Internship Term Beakup by Year",
-    subtitle = "Data from College of the Atlantic (1970 to 2023)",
-    x = "Year",
-    fill = "Term") +
-  theme_minimal() +
-  theme(axis.title.y = element_blank(),
-        axis.line = element_blank(), 
-        axis.ticks = element_blank(),
-        axis.text.y = element_blank())
-```
-
-```{r test-plot-2}
-Tidy_Time_Summary %>% 
-  ggplot(aes(x = Term, y = count, fill = as.numeric(Year))) + 
-  geom_bar(stat = "identity", position = "stack") + 
-  coord_polar(start = 0) + 
-  labs(
-    title = "Student Internship Year Breakup by Term",
-    subtitle = "Data from College of the Atlantic (1970 to 2023)",
-    x = "Term",
-    fill = "Year") + 
-  theme_minimal() +  
-  theme(axis.title.y = element_blank(),
-        axis.text.y = element_blank(),
-        legend.key.size = unit(0.7, "lines")) +
-  scale_fill_viridis_c(direction = -1)
-```
 
 
 ```{r test-plot-3}
@@ -392,25 +343,37 @@ Internship_Leaflet_Official_Complete %>%
   scale_fill_viridis_d()
 ```
 
-```{r test-plot-9}
-Internship_Leaflet_Official_Complete %>%
-  count(Year, Location_Type) %>%
-  ggplot(aes(x = Year, y = n, colour = Location_Type)) +
-  geom_line(size = 0.8) +
-  theme_minimal() +
-  labs(x = "Year", y = "Count", title = "Counts of Internship Locations by Year and Type") + 
-  scale_colour_viridis_d()
+
+
+```{r plot-1-final}
+Internship_Leaflet_Official_Complete %>% 
+  drop_na(Term) %>% 
+  drop_na(Decade) %>% 
+  group_by(Decade, Term) %>%
+  summarise(count = n()) %>%
+  ungroup() %>% 
+  mutate(Term = fct_relevel(Term, "Fall", "Winter", "Spring", "Summer")) %>%  
+ggplot(aes(x = Decade, y = count, fill = as.numeric(Decade))) + 
+  geom_bar(stat = "identity", position = "stack") + 
+  facet_wrap(~Term, nrow = 4, scales = "free_y") + 
+  theme_minimal() +  
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        legend.key.size = unit(0.7, "lines")) +
+  scale_fill_viridis_c(direction = -1) +
+  coord_flip() +
+  theme(legend.position = "top") + 
+  guides(fill = guide_legend(nrow = 1, byrow = TRUE)) +
+  labs(
+    y = "Number of Internships", 
+    title = "Student Internship Year Breakup by Term",
+    subtitle = "Data from College of the Atlantic (1970 to 2023)",
+    fill = "Decade")
 ```
 
-```{r test-plot-10}
-Internship_Leaflet_Official_Complete %>%
-ggplot(aes(x = Decade,
-             fill = Location_Type)) +
- geom_bar(position = "stack") +
-  facet_wrap(~Location_Type, nrow = 3, scales = "free_y") +
-  scale_fill_viridis_d()
-```
-```{r test-plot-11}
+### Plot 2: Leaflet Map of Internships by Decade
+
+```{r plot-2-final}
 Top_10_Sites <- Internship_Leaflet_Official_Complete %>% 
   filter(!is.na(Internship.Site) & Internship.Site != "Prior Fulfillment of Internship Requirement") %>% 
   mutate(Internship.Site = case_when( 
@@ -460,104 +423,15 @@ Top_10_Sites %>%
   scale_fill_viridis_d(direction = -1)
 ```
 
+### Plot 3:
 
-### Plot 1: Bar Chart of Term ... more here
-
-```{r plot-1-test}
-Internship_Leaflet_Official_Complete %>% 
-  drop_na(Term) %>% 
-  drop_na(Decade) %>% 
-  group_by(Decade, Term) %>%
-  summarise(count = n()) %>%
-  ungroup() %>% 
-  ggplot(aes(x = Term, y = count, fill = as.numeric(Decade))) + 
-  geom_bar(stat = "identity", position = "stack") + 
-  coord_polar(start = 0) + 
-  labs(
-    title = "Student Internship Year Breakup by Term",
-    subtitle = "Data from College of the Atlantic (1970 to 2023)",
-    x = "Term",
-    fill = "Year") + 
-  theme_minimal() +  
-  theme(axis.title.y = element_blank(),
-        axis.text.y = element_blank(),
-        legend.key.size = unit(0.7, "lines")) +
-  scale_fill_viridis_c(direction = -1)
-
-ggsave("term-polar-chart.png", width = 4, height = 4)
-
-ggsave("term-polar-chart-wide.png", width = 6, height = 4)
+```{r test-plot-9}
+Internship_Leaflet_Official_Complete %>%
+  count(Year, Location_Type) %>%
+  ggplot(aes(x = Year, y = n, colour = Location_Type)) +
+  geom_line(size = 0.8) +
+  theme_minimal() +
+  labs(x = "Year", y = "Count", title = "Counts of Internship Locations by Year and Type") + 
+  scale_colour_viridis_d()
 ```
-
-```{r plot-1-test-1}
-Internship_Leaflet_Official_Complete %>% 
-  drop_na(Term) %>% 
-  drop_na(Decade) %>% 
-  group_by(Decade, Term) %>%
-  summarise(count = n()) %>%
-  ungroup() %>% 
-  ggplot(aes(x = Term, y = count, fill = as.numeric(Decade))) + 
-  geom_bar(stat = "identity", position = "stack") + 
-  labs(
-    title = "Student Internship Year Breakup by Term",
-    subtitle = "Data from College of the Atlantic (1970 to 2023)",
-    x = "Term",
-    fill = "Year") + 
-  theme_minimal() +  
-  theme(axis.title.y = element_blank(),
-        axis.text.y = element_blank(),
-        legend.key.size = unit(0.7, "lines")) +
-  scale_fill_viridis_c(direction = -1)
-```
-
-```{r plot-1-test-2}
-Internship_Leaflet_Official_Complete %>% 
-  drop_na(Term) %>% 
-  drop_na(Decade) %>% 
-  group_by(Decade, Term) %>%
-  summarise(count = n()) %>%
-  ungroup() %>% 
-ggplot(aes(x = Term, y = count, fill = as.numeric(Decade))) + 
-  geom_bar(stat = "identity", position = "fill") + 
-  labs(
-    title = "Student Internship Year Breakup by Term",
-    subtitle = "Data from College of the Atlantic (1970 to 2023)",
-    x = "Term",
-    fill = "Year") + 
-  theme_minimal() +  
-  theme(axis.title.y = element_blank(),
-        axis.text.y = element_blank(),
-        legend.key.size = unit(0.7, "lines")) +
-  scale_fill_viridis_c(direction = -1)
-```
-
-```{r plot-1-final}
-Internship_Leaflet_Official_Complete %>% 
-  drop_na(Term) %>% 
-  drop_na(Decade) %>% 
-  group_by(Decade, Term) %>%
-  summarise(count = n()) %>%
-  ungroup() %>% 
-  mutate(Term = fct_relevel(Term, "Fall", "Winter", "Spring", "Summer")) %>%  
-ggplot(aes(x = Decade, y = count, fill = as.numeric(Decade))) + 
-  geom_bar(stat = "identity", position = "stack") + 
-  facet_wrap(~Term, nrow = 4, scales = "free_y") + 
-  theme_minimal() +  
-  theme(axis.title.y = element_blank(),
-        axis.text.y = element_blank(),
-        legend.key.size = unit(0.7, "lines")) +
-  scale_fill_viridis_c(direction = -1) +
-  coord_flip() +
-  theme(legend.position = "top") + 
-  guides(fill = guide_legend(nrow = 1, byrow = TRUE)) +
-  labs(
-    y = "Number of Internships", 
-    title = "Student Internship Year Breakup by Term",
-    subtitle = "Data from College of the Atlantic (1970 to 2023)",
-    fill = "Decade")
-```
-
-### Plot 2: Leaflet Map of Internships by Decade
-
-### Plot 3: ~Coming Soon~
 
