@@ -559,5 +559,5 @@ ggplot(aes(x = Decade, y = count, fill = as.numeric(Decade))) +
 
 ### Plot 2: Leaflet Map of Internships by Decade
 
-### Plot 3: ~Coming Soon~
+### Plot 3: Top 10 Internships
 
