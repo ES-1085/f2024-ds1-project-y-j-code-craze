@@ -20,7 +20,6 @@ library(ggthemes)
 library(gapminder)
 
 Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.csv")
-Tidy_Mapped_Clean <- read.csv("/cloud/project/data/Tidy_Mapped_Clean.csv")
 Internship_Leaflet_Official_Complete <- read_csv("/cloud/project/data/Internship_Leaflet_Official - Complete.csv")
 ```
 
@@ -59,7 +58,7 @@ Tidy_Term %>%
   summarise(count = n())
 ```
 
-###Step 2: Tidy the Year Column (All work applied to data frame "Tidy_Term")
+### Step 2: Tidy the Year Column (All work applied to data frame "Tidy_Term")
 
 #### Step 2 a.) Check for all unique variables within the Year coloumn
 
@@ -141,6 +140,8 @@ Yay! it's all tidy!
 
 ### Step 3: Create a Decade Variable
 
+`Internship_Leaflet_Official_Complete` is a data set that we derived from  the `Tidy_Time` data set. We had to do this because of a few typos in the original data set that we noticed which had to be fixed by being downloaded and edited on Excel. That is why the operational data set changes; our work is not undone, simply built upon.
+
 We thought that it would be easier to visualize change over time if we used decades instead of years. We wanted to ensure that our plots were readable. Because this data set is growing, there aren't very many entries from the 2020s (specifically 2023).
 
 ```{r create-decade-variable}
@@ -171,9 +172,17 @@ mutate(region = str_extract(Location, "(?<=, ).+$"),
       TRUE ~ "International"))
 ```
 
-### Step 5 (not shown here): Manually Enter Missing lat/lon Variables
+### Step 5: Manually Enter Missing lat/lon Variables
 
-Many of the locations in our data set were missing variables for latitude and longitude. Because r uses these variables to create leaflet maps, we couldn't visualize about half of the internships in our data set. Yeshaya first used Chat GPT to fill in the missing values. Chat GPT defaulted many of the missing locations to Bar Harbor. Yeshaya then went in and manually replaced all of the missing coordinates that Chat GPT couldn't find. There are still 1 or 2 internships that have coordinates that don't match the locations (they have Bar Harbor coordinates).
+Many of the locations in our data set were missing latitudinal and longitudinal variables. Due to the fact that these variables are required to create leaflet maps, we couldn't visualize about half of the internships in our data set. Yeshaya first used Chat GPT to fill in the missing values using the following structured prompt:
+
+*Here is the data set, please add missing latitude and longitude values based on the locations mentioned in the "Location" column. Use OpenStreetMap (via Nominatim).*
+
+*If there is a specific town mentioned please attempt to find the exact coordinates based on the specific town/city in the Location column.*
+
+*Fallback to State or Country: If exact town/city coordinates aren’t available, use the coordinates of the state (for U.S. locations) or the country if it’s outside the U.S. Default to Bar Harbor, ME: If neither town/city nor state/country coordinates are available,default to Bar Harbor, ME coordinates. For locations with multiple entries separated by a '/', use the coordinates for the second location. If you cannot find the values through geocoding I need you to look up coordinates online and enter them. For NaN entries in the Location column, leave the latitude and longitude values as missing (NaN).*
+
+Due to limitation with OpenStreetMap's session connectivity time limits, ChatGPT was unable to effectively fill all missing variables within the data set. It would have been ideal to use a different API to geocode the data such as Google's or Apple Maps however these are both paid services. Because of these limitations a majority of locations defaulted to Bar Harbor's lat/lon values. To correct this Yeshaya went in and manually replaced all of the missing coordinates that Chat GPT couldn't find. There are still 3 or 4 internships that have coordinates that don't match the locations (they have Bar Harbor coordinates).
 
 ### ggsave example for saving plots
 
@@ -223,23 +232,17 @@ yj_theme <- theme_minimal() +
         )
 ```
 
-
 ### Plot 1: Amount of Internships per Term by Decade
 
-We chose a faceted bar chart to visualize internship terms over time because we wanted to be able to easily compare each decade by term. We also wanted to show that summer is the most popular term for internships. This was the most readable visualization to communicate our goals.
+We chose a faceted bar chart to visualize internship terms over time because it allows us to easily compare which term was the most common for students to complete their internships each year. This helped us visually determine and demonstrate that summer is the most popular term for internships, regardless of decade. This faceted visualization most effectively communicated the trend we were aiming to capture, with the added benefit of visualizing the number of internships for each decade in each term.
 
-We flipped our visualization horizontally so that it would be easier to compare the amount of internships between decades.
+We flipped our chart horizontally so that it would be easier to compare the amount of internships between decades.
 
-There is only one column of graphs because we wanted to make it easier to compare the amount of internships between terms. We also wanted to make sure that the graphs have enough space to show the count per term.
+There is only one column of graphs because we wanted to make it easier to compare the amount of internships between terms. We also wanted to make sure that the graphs have enough space to show the count per term. We ordered the graphs from the beginning of the academic year to the end so that the viewer can see terms in chronological order rather than by the most/least popular terms.
 
-We decided to use a colorblind friendly color scheme in our plots so that they could be accessible for a wide audience. We used the scale_fill_viridis feature to do this.
+We decided to use a colorblind friendly color scheme in our plots so that they could be accessible for a wide audience. We used the scale_fill_viridis_d function to do this. Recent decades are darker to place emphasis on them.
 
-There is only one column of graphs because we wanted to make it easier to compare the amount of internships between terms. We also wanted to make sure that the graphs have enough space to show the amount of internships per term. We ordered the graphs from the beginning of the academic year to the end so that the viewer can see terms in chronological order rather than by the most/least popular terms. 
-
-We decided to use a colorblind friendly color scheme in our plots so that they could be accessible for a wide audience. We used the scale_fill_viridis_d feature to do this. Recent decades are darker to place emphasis on them. 
-
-
-We wanted our legend to be readable, so we flipped it horizontally and separated the colors by decade.
+We wanted our legend to be immediately read (for clarity where reading the graph), so we flipped it horizontally and moved it to the top of the figure.
 
 ```{r plot-1-final}
 Internship_Leaflet_Official_Complete %>% 
@@ -268,15 +271,11 @@ ggplot(aes(x = Decade, y = count, fill = as.numeric(Decade))) +
 
 ### Plot 2: Top 10 Internships Done by COA Students
 
+Initially, we wanted to identify the top 10 industries where COA internships were taking place. However, because we would have had to manually categorize each internship by industry, we decided instead to focus on the most common organizations where COA students interned.
 
-Because it was too difficult to sort each internship into alumni industries, we decided to see the most common organizations COA students interned for.
+We flipped the bar chart so the most common internship was at the top and the tenth most common internship was at the bottom. It's easier to see where each internship falls in the top ten ranking when they are stacked on top of each other in a horizontal bar chart. It also makes it slightly easier, we think, to determine the number of internships that took place at each internship site.
 
-Because it was too difficult to sort each internship into alumni industries, we decided to see the most common organizations where COA students completed their internships. 
-
-We flipped the bar chart so the most common internship was at the top and the tenth most common internship was at the bottom. It's easier to see where each internship falls in the top ten ranking when they are stacked on top of each other in a horizontal bar chart. 
-
-We decided to use a colorblind friendly color scheme in our plots so that they could be accessible for a wide audience. We used the scale_fill_viridis_d feature to do this. The most popular internship is the darkest and the least popular is the lightest. The random colors assigned to each internship made the graph look messy and hard to understand. The gradiant allows the viewer to easily discern the most and least popular internships included in this visualization. 
-
+To maintain the accessibility of our visualizations we used the scale_fill_viridis_d function once more; every use of the scale_color/fill_viridis function in our project uses variation 'd' because we are dealing mostly with discrete data. The most popular internship is the darkest and the least popular is the lightest. The random colors assigned to each internship made the graph look messy and hard to understand. The flipped gradient, achieved through specifying direction within the scale_viridis [`scale_fill_viridis_d(direction = -1)`] function allows the viewer to easily discern the most and least popular internships included in this visualization.
 
 ```{r plot-2-final}
 Top_10_Sites <- Internship_Leaflet_Official_Complete %>% 
@@ -334,11 +333,11 @@ Top_10_Sites %>%
 
 ### Plot 3: Local, Domestic, and International Internships Over Time
 
-We used a line graph to show changes in local, domestic, and international internships by year. This was the best way to show trends over shorter spans of time while creating a clean visualization that shows all of the years in the data set. 
+We used a line graph to show changes in local, domestic, and international internships over time. This was the best way to show both trends over shorter periods of time while simultaneously creating a clean visualization that shows all of the years in the data set.
 
-We highlighted 2019 to 2022 to show the effects of COVID. 
+We highlighted 2019 to 2022 to show the effects of COVID on not only the drop in travel, but the reduction in number of internships overall. We added an annotation to the highlight to make what we are highlighting clear.
 
-We decided to use a colorblind friendly color scheme in our plots so that they could be accessible for a wide audience. We used the scale_color_viridis_d feature to do this.
+We continued to use the scale_color_viridis_d function to maintain color blind accessibility in our visualizations. For more accessibility and clarity, we specified what each location type refers to within the subtitle of the plot. 
 
 ```{r test-plot-9}
 Internship_Leaflet_Official_Complete %>%
@@ -370,11 +369,11 @@ Internship_Leaflet_Official_Complete %>%
 
 ### Plot 4.1: Leaflet Map of All Internships
 
-We used a leaflet map to further visualize internship locations. This data set shows the locations of all of the internships. 
+We used a leaflet map to visualize internship locations in a more specific and interactive way. This leaflet shows the locations of all of the internships in the data set (subject to the fact that they had Location and lat/lon data).
 
-We clustered the points to ensure that our visualization is readable.
+We clustered the points to ensure that our visualization is readable and to present the density distribution of COA internships globally.
 
-Our attempt to make custom markers didn't work, so we used the default markers. 
+Our attempt to make custom markers didn't work, so we used the default markers. However, for more information availability we made it so that when each marker is clicked, there is a pop up that shows you the Internship Site (organization), Location, and Year that the internship took place.
 
 ```{r tes-plot-6}
 leaflet(Internship_Leaflet_Official_Complete) %>%
@@ -389,14 +388,14 @@ leaflet(Internship_Leaflet_Official_Complete) %>%
 
 ### Plot 4.2: Leaflet Map of All Internships with Decade Layers
 
-We used a leaflet map to further visualize internship locations and how they have changed over time. This data set shows the locations of all of the internships into the data set and has layers for each decade that can be toggled on and off. 
+We used a leaflet map to further visualize internship locations and how they have changed over time. This map shows the locations of all of the internships in the data set and has layers for each decade that can be toggled on and off.
 
-We didn't cluster the points in this graph so it is easier to see changes when different layers are toggled on and off. 
+We didn't cluster the points in this graph so it is easier to see changes when different layers are toggled on and off.
 
-We used a different color scheme in this graph to show each decade in chonological order. 
+We used a different color scheme in this graph due to the fact that the scale_color_viridis function is not applicable to leaflet maps. We still wanted to make our visualization color blind friendly so we used Paul Tol's color blind friendly palette. His website and explanation of the scale can be found here : https://personal.sron.nl/~pault/.
 
 ```{r final-leaflet-map-decades}
-pal <- colorFactor(palette = c("red", "orange", "yellow", "green", "blue", "purple"), domain = Internship_Leaflet_Official_Complete$Decade)
+pal <- colorFactor(palette = c("#117733", "#AA4499", "#DDCC77", "#44AA99", "#332288", "#882255"), domain = Internship_Leaflet_Official_Complete$Decade)
 
 leaflet(Internship_Leaflet_Official_Complete) %>%
   addTiles() %>%
