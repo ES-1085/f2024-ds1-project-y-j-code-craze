@@ -267,6 +267,8 @@ ggplot(aes(x = Decade, y = count, fill = as.numeric(Decade))) +
     y = "Number of Internships", 
     title = "Student Internship Year Breakup by Term",
     fill = "Decade")
+
+ggsave("Plot-1-Test-2.png", width = 6, height = 4)
 ```
 
 ### Plot 2: Top 10 Internships Done by COA Students
@@ -329,6 +331,8 @@ Top_10_Sites %>%
        subtitle = "Data from 1970 to 2023",
        y = "Number of Internships") +
   theme(axis.title.y = element_blank())
+
+ggsave("Plot-2-Test-4.png", width = 8, height = 4)
 ```
 
 ### Plot 3: Local, Domestic, and International Internships Over Time
@@ -365,6 +369,8 @@ Internship_Leaflet_Official_Complete %>%
             colour = "black",
             family = "Times New Roman",
             size = 4.5)
+
+ggsave("Plot-3-Test-2.png", width = 8, height = 5)
 ```
 
 ### Plot 4.1: Leaflet Map of All Internships

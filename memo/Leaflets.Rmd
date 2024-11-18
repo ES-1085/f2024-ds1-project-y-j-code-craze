@@ -30,7 +30,7 @@ leaflet(Internship_Leaflet_Official_Complete) %>%
 ### Explore Internships by Decade!
 
 ```{r leaflet-by-decade}
-pal <- colorFactor(palette = c("red", "orange", "yellow", "green", "blue", "purple"), domain = Internship_Leaflet_Official_Complete$Decade)
+pal <- colorFactor(palette = c("#117733", "#AA4499", "#DDCC77", "#44AA99", "#332288", "#882255"), domain = Internship_Leaflet_Official_Complete$Decade)
 
 leaflet(Internship_Leaflet_Official_Complete) %>%
   addTiles() %>%
