@@ -4,7 +4,7 @@ author: "Y & J Code Craze"
 output: html_document
 ---
 
-```{r load-packages, message = FALSE}
+```{r load-packages, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(broom)
 library(tidyverse)
@@ -19,8 +19,8 @@ library(RColorBrewer)
 library(ggthemes)
 library(gapminder)
 
-Internship_Data_Untidy <- read.csv("/cloud/project/data/Internship_Data_Untidy.csv")
-Internship_Leaflet_Official_Complete <- read_csv("/cloud/project/data/Internship_Leaflet_Official - Complete.csv")
+Internship_Data_Untidy <- read.csv("../data/Internship_Data_Untidy.csv")
+Internship_Leaflet_Official_Complete <- read_csv("../data/Internship_Leaflet_Official - Complete.csv")
 ```
 
 ## Data Clean Up Steps for Overall Data
@@ -29,7 +29,7 @@ Internship_Leaflet_Official_Complete <- read_csv("/cloud/project/data/Internship
 
 #### Step 1 a.) Change Entries with unknown term data to "NA" and unnesesary remove spaces before and after an entry
 
-```{r clear-unknown-term-data}
+```{r clear-unknown-term-data, message = FALSE, warning = FALSE}
 Internship_Data_Untidy %>% 
   mutate(Term = case_when( 
     Term %in% c("NA", "Not Stated", "-", "", "NA ", "All Year", "n/a", "Year", "Year-round", "N/A", "Previous Work Experience", "Nine Months", "Prior Fulfillment"))) ~ "NA" %>% 
@@ -184,27 +184,6 @@ Many of the locations in our data set were missing latitudinal and longitudinal 
 
 Due to limitation with OpenStreetMap's session connectivity time limits, ChatGPT was unable to effectively fill all missing variables within the data set. It would have been ideal to use a different API to geocode the data such as Google's or Apple Maps however these are both paid services. Because of these limitations a majority of locations defaulted to Bar Harbor's lat/lon values. To correct this Yeshaya went in and manually replaced all of the missing coordinates that Chat GPT couldn't find. There are still 3 or 4 internships that have coordinates that don't match the locations (they have Bar Harbor coordinates).
 
-### ggsave example for saving plots
-
-```{r starwars ggsave example}
-exp1 <- starwars |>
-  filter(mass < 1000, 
-         species %in% c("Human", "Cerean", "Pau'an", "Droid", "Gungan")) |>
-  ggplot() +
-  geom_point(aes(x = mass, 
-                 y = height, 
-                 color = species)) +
-  labs(x = "Weight (kg)", 
-       y = "Height (m)",
-       color = "Species",
-       title = "Weight and Height of Select Starwars Species",
-       caption = paste("This data comes from the starwars api: https://swapi.py43.com"))
-
-
-ggsave("example-starwars.png", width = 4, height = 4)
-
-ggsave("example-starwars-wide.png", width = 6, height = 4)
-```
 
 ## Plot Creation
 
@@ -244,7 +223,7 @@ We decided to use a colorblind friendly color scheme in our plots so that they c
 
 We wanted our legend to be immediately read (for clarity where reading the graph), so we flipped it horizontally and moved it to the top of the figure.
 
-```{r plot-1-final}
+```{r plot-1-final, message = FALSE, warning = FALSE}
 Internship_Leaflet_Official_Complete %>% 
   drop_na(Term) %>% 
   drop_na(Decade) %>% 
@@ -343,11 +322,11 @@ We highlighted 2019 to 2022 to show the effects of COVID on not only the drop in
 
 We continued to use the scale_color_viridis_d function to maintain color blind accessibility in our visualizations. For more accessibility and clarity, we specified what each location type refers to within the subtitle of the plot. 
 
-```{r test-plot-9}
+```{r plot-3-final, message = FALSE, warning = FALSE}
 Internship_Leaflet_Official_Complete %>%
   count(Year, Location_Type) %>%
   ggplot(aes(x = Year, y = n, colour = Location_Type)) +
-  geom_line(size = 0.8) +
+  geom_line(linewidth = 0.8) +
   yj_theme +
   labs(title = "Number of Internships per Year by Location Type",
        subtitle = "Local = On MDI; Domestic = Within the USA; International = Outside the USA",
@@ -381,7 +360,7 @@ We clustered the points to ensure that our visualization is readable and to pres
 
 Our attempt to make custom markers didn't work, so we used the default markers. However, for more information availability we made it so that when each marker is clicked, there is a pop up that shows you the Internship Site (organization), Location, and Year that the internship took place.
 
-```{r tes-plot-6}
+```{r leaflet-1-final, message = FALSE, warning = FALSE}
 leaflet(Internship_Leaflet_Official_Complete) %>%
   addTiles() %>%
   setView(lng = mean(Internship_Leaflet_Official_Complete$Longitude, na.rm = TRUE), 
@@ -400,7 +379,7 @@ We didn't cluster the points in this graph so it is easier to see changes when d
 
 We used a different color scheme in this graph due to the fact that the scale_color_viridis function is not applicable to leaflet maps. We still wanted to make our visualization color blind friendly so we used Paul Tol's color blind friendly palette. His website and explanation of the scale can be found here : https://personal.sron.nl/~pault/.
 
-```{r final-leaflet-map-decades}
+```{r leaflet-2-final, message = FALSE, warning = FALSE}
 pal <- colorFactor(palette = c("#117733", "#AA4499", "#DDCC77", "#44AA99", "#332288", "#882255"), domain = Internship_Leaflet_Official_Complete$Decade)
 
 leaflet(Internship_Leaflet_Official_Complete) %>%

@@ -25,7 +25,6 @@ A link to the code and how we created our graphics in our memo can be found [her
 
 A link to our leaflet is [here](memo/Leaflets.html).
 
-
 ## Data
 
 Include a citation for your data here. See
