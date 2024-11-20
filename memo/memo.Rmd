@@ -223,7 +223,7 @@ We decided to use a colorblind friendly color scheme in our plots so that they c
 
 We wanted our legend to be immediately read (for clarity where reading the graph), so we flipped it horizontally and moved it to the top of the figure.
 
-```{r plot-1-final, message = FALSE, warning = FALSE}
+```{r plot-1-final, message = FALSE, warning = FALSE, fig.alt = "This bar plot that shows COA student internships in each decade from the 1970s to the 2020s in different terms. The plot is faceted by each term. Summer is the most popular term for every single decade by a significant margin. All decades seem to follow similar trends and after summer the most popular terms are Winter, Fall, and Spring, respectively. The decade with the largest number of internships that took place in a term was over 200 internships in the summers of the 2010s. However it should be noted that specific figures in this graph are not as relevant as the proportions demonstrated due to the limited nature of the dataset."}
 Internship_Leaflet_Official_Complete %>% 
   drop_na(Term) %>% 
   drop_na(Decade) %>% 
@@ -322,7 +322,7 @@ We highlighted 2019 to 2022 to show the effects of COVID on not only the drop in
 
 We continued to use the scale_color_viridis_d function to maintain color blind accessibility in our visualizations. For more accessibility and clarity, we specified what each location type refers to within the subtitle of the plot. 
 
-```{r plot-3-final, message = FALSE, warning = FALSE}
+```{r plot-3-final, message = FALSE, warning = FALSE, fig.alt = "This line graph maps the change in number of internships in different location types across 1970 to 2023. There are three defines location types. Local internships are those that took place on MDI. Domestic internships are those that took place within the United States, excluding the Local internships. International internships are those that took place outside the USA. For all years domestic internships are by far the most popular. International and local internships vary by year, exchanging which is the most popular on an alomst year by year basis. There are some suddent spikes and drops in the lines for all three location types which may be a result of limited data, but no cause is indentified. The annoted drop in the 2020-2021 period highlights a drop across all internships attributed to the COVID-19 pandemic."}
 Internship_Leaflet_Official_Complete %>%
   count(Year, Location_Type) %>%
   ggplot(aes(x = Year, y = n, colour = Location_Type)) +
