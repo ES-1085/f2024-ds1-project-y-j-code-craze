@@ -2,7 +2,7 @@ Internships that set the Bar (Harbor): COA Internships from 1970-2023
 ================
 by Y & J Code Craze 
 
-## Summary
+## Summary and Interpretation
 
 Our data about internships that COA students have completed over the last 50 years comes from information compiled by Jeffry Neuhouser and their work study students. The data was collected by looking over old internship reports and entering information into a spreadsheet. This dataset is still growing as Jeffry continues to go through old documents. The currently expanding nature of the data means that our dataset only contains data from students whose last names begin with the letters A through N, and is limited in data related to certain years (especially 2023-2024).
     
