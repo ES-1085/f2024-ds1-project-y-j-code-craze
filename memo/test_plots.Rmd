@@ -4,7 +4,9 @@ author: "Y & J Code Craze"
 output: html_document
 ---
 
-This document should contains all of our test plots and the tidying that went along with them. We wanted to use this document to show our process and to domcument the rest of the work we did. 
+This document contains all of our test plots and the tidying that went along with them. 
+
+We wanted to use this document to show our process and to document the rest of the work we did. None of these plots ended up being relevant to our final handout but we spent a lot of time trying a lot of different things and we thought it was worth saving and showcasing. 
 
 ```{r load-packages, message = FALSE}
 library(tidyverse)
