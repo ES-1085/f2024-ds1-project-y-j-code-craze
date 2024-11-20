@@ -2,21 +2,21 @@
 output: html_document
 ---
 
-```{r load-packages}
+```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(leaflet)
 library(colorspace)
 Internship_Leaflet_Official_Complete <- read_csv("/cloud/project/data/Internship_Leaflet_Official - Complete.csv")
 ```
 
-```{r create-decade}
+```{r create-decade, echo = FALSE, message = FALSE, warning = FALSE}
 Internship_Leaflet_Official_Complete <- Internship_Leaflet_Official_Complete %>% 
   mutate(Decade = (floor(Year/10)*10))
 ```
 
 ### Explore All Internships! 
 
-```{r leaflet-cluster}
+```{r leaflet-cluster, echo = FALSE, message = FALSE, warning = FALSE}
 leaflet(Internship_Leaflet_Official_Complete) %>%
   addTiles() %>%
   setView(lng = mean(Internship_Leaflet_Official_Complete$Longitude, na.rm = TRUE), 
@@ -29,7 +29,7 @@ leaflet(Internship_Leaflet_Official_Complete) %>%
 
 ### Explore Internships by Decade!
 
-```{r leaflet-by-decade}
+```{r leaflet-by-decade, echo = FALSE, message = FALSE, warning = FALSE}
 pal <- colorFactor(palette = c("#117733", "#AA4499", "#DDCC77", "#44AA99", "#332288", "#882255"), domain = Internship_Leaflet_Official_Complete$Decade)
 
 leaflet(Internship_Leaflet_Official_Complete) %>%

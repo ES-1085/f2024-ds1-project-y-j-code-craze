@@ -13,7 +13,7 @@ by Y & J Code Craze
 
 ## Handout
 
-Our presentation can be found [here](handout/handout.pdf). You can update the filename and extension of your handout.
+Our final poster/handout can be found [here](y-j-handout.pdf).
 
 ## Memo
 
@@ -21,7 +21,7 @@ A link to the code and how we created our graphics in our memo can be found [her
 
 ## Leaflet
 
-A link to our leaflet is [here](Leaflets.html).
+A link to our leaflet is [here](memo/Leaflets.html).
 
 
 ## Data
