@@ -1,17 +1,22 @@
 ---
 title: "Scratchpad - Yeshaya"
+output : html_document
 ---
 
-This document contains all the rough work involved in the cleaning up of data 
+This document contains all the rough work involved in the cleaning up of data as well as some experimental graphs and work. 
+```{r read-file}
 
-```{r}
+```
+
+
+```{r view-terms}
 unique(Tidy_Term$Year)
 
 Tidy_Term %>% 
   arrange(Year)
 ```
 
-```{r}
+```{r check-further-terms}
 Tidy_Term %>%
   arrange(Year) %>%
   slice(1000:1628)
@@ -19,7 +24,7 @@ Tidy_Term %>%
 
 
 
-```{r}
+```{r clean-terms}
 Tidy_Time <- Tidy_Term %>% 
 mutate(Year = case_when(
   Year %in% c("1970") ~ "1970",
@@ -78,23 +83,23 @@ mutate(Year = case_when(
 ```
 
 
-```{r}
+```{r recheck-terms}
 unique(Tidy_Time$Year)
 ```
-```{r}
+```{r recheck-further}
 Tidy_Time %>% 
 arrange(Year) %>% 
   slice(1000:1628)
 ```
 
-```{r}
+```{r double-check}
 Tidy_Time %>% 
   group_by(Year) %>%
   summarise(count = n())
 ```
 
 
-```{r}
+```{r further-cleaning}
 # additional cleaning 
 
 Tidy_Mapped_Clean <- Tidy_Mapped %>% 
@@ -102,7 +107,7 @@ Tidy_Mapped_Clean <- Tidy_Mapped %>%
    filter(!is.na(Term), !is.na(Location), !is.na(Longitude), !is.na(Latitude))
 ```
 
-```{r}
+```{r checking-data}
 # checking
 Test_Cleaning <- Tidy_Mapped_Clean %>% 
   select(Term, Location, Latitude, Longitude, Year)
@@ -110,81 +115,77 @@ Test_Cleaning <- Tidy_Mapped_Clean %>%
   vis_miss(Test_Cleaning)
 
 ```
-```{r}
+```{r visualisation}
 Test_Cleaning <- Tidy_Mapped_Clean %>% 
   select(Term, Location, Latitude, Longitude, Year)
 
   vis_dat(Test_Cleaning)
 
 ```
-```{r}
-write.csv(Tidy_Mapped_Clean, "Tidy_Mapped_Clean.csv", row.names = FALSE)
+```{r saving-data}
+#write.csv(Tidy_Mapped_Clean, "Tidy_Mapped_Clean.csv", row.names = FALSE)
 ```
 
-```{r}
+```{r chat-gpt-geocoding}
 # Load necessary libraries
 library(tidyverse)
 library(tidygeocoder)  # For geocoding with Nominatim API
 
 # Load the data
-experiment <- read.csv("/cloud/project/data/Tidy_Time.csv")
+#experiment <- read.csv("/cloud/project/data/Tidy_Time.csv")
 
 # Function to get coordinates based on the location
-get_coordinates <- function(location) {
-  if (is.na(location)) {
-    return(c(NA, NA)) # Leave as NaN if location is NaN
-  }
+#get_coordinates <- function(location) {
+  #if (is.na(location)) {
+    #return(c(NA, NA)) # Leave as NaN if location is NaN
+  #}
   
   # Handle multiple entries by taking the second one if separated by '/'
-  if (grepl("/", location)) {
-    location <- str_split(location, "/")[[1]][2] %>% str_trim()
-  }
+  #if (grepl("/", location)) {
+    #location <- str_split(location, "/")[[1]][2] %>% str_trim()
+  #}
   
   # Try geocoding with town/city
-  result <- tryCatch(
-    {
-      Sys.sleep(1)  # Add delay of 1 second between requests
-      geocode(location, method = 'osm', lat = Latitude, long = Longitude, limit = 1)
-    },
-    error = function(e) tibble(Latitude = NA, Longitude = NA) # In case of failure
-  )
+  #result <- tryCatch(
+    #{
+      #Sys.sleep(1)  # Add delay of 1 second between requests
+      #geocode(location, method = 'osm', lat = Latitude, long = Longitude, limit = 1)
+   # },
+    #error = function(e) tibble(Latitude = NA, Longitude = NA) # In case of failure
+  #)
   
   # Fallback to state or country if exact town/city is not found
-  if (is.na(result$Latitude)) {
-    if (grepl(",", location)) {
-      fallback_location <- str_split(location, ",")[[1]][2] %>% str_trim()
-      result <- tryCatch(
-        {
-          Sys.sleep(1)  # Add delay for fallback geocoding attempt
-          geocode(fallback_location, method = 'osm', lat = Latitude, long = Longitude, limit = 1)
-        },
-        error = function(e) tibble(Latitude = NA, Longitude = NA)
-      )
-    }
-  }
+  #if (is.na(result$Latitude)) {
+    #if (grepl(",", location)) {
+      #fallback_location <- str_split(location, ",")[[1]][2] %>% str_trim()
+      #result <- tryCatch(
+        #{
+         # Sys.sleep(1)  # Add delay for fallback geocoding attempt
+          #geocode(fallback_location, method = 'osm', lat = Latitude, long = Longitude, limit = 1)
+        #},
+        #error = function(e) tibble(Latitude = NA, Longitude = NA)
+      #)
+    #}
+  #}
   
   # Default to Bar Harbor, ME coordinates if both fail
-  if (is.na(result$Latitude)) {
-    result <- tibble(Latitude = 44.387611, Longitude = -68.203911) # Bar Harbor, ME coordinates
-  }
+  #if (is.na(result$Latitude)) {
+    #result <- tibble(Latitude = 44.387611, Longitude = -68.203911) # Bar Harbor, ME coordinates
+  #}
   
-  return(c(result$Latitude, result$Longitude))
-}
+  #return(c(result$Latitude, result$Longitude))
+#}
 
 # Apply the function to fill in missing Latitude and Longitude
-experiment <- experiment %>%
-  mutate(
-    coords = map(Location, get_coordinates),
-    Latitude = ifelse(is.na(Latitude), map_dbl(coords, 1), Latitude),
-    Longitude = ifelse(is.na(Longitude), map_dbl(coords, 2), Longitude)
-  ) %>%
-  select(-coords) # Drop intermediate column
+#experiment <- experiment %>%
+  #mutate(
+    #coords = map(Location, get_coordinates),
+    #Latitude = ifelse(is.na(Latitude), map_dbl(coords, 1), Latitude),
+    #Longitude = ifelse(is.na(Longitude), map_dbl(coords, 2), Longitude)
+  #) %>%
+  #select(-coords) # Drop intermediate column
 
 # Save the updated dataset
-write.csv(data, "Tidy_Time_Filled.csv", row.names = FALSE)
-```
-
-```{r}
-write.csv(experiment, "experiment.csv", row.names = FALSE)
+# write.csv(data, "Tidy_Time_Filled.csv", row.names = FALSE)
 ```
 
