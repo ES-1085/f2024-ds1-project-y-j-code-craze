@@ -258,7 +258,7 @@ We flipped the bar chart so the most common internship was at the top and the te
 
 To maintain the accessibility of our visualizations we used the scale_fill_viridis_d function once more; every use of the scale_color/fill_viridis function in our project uses variation 'd' because we are dealing mostly with discrete data. The most popular internship is the darkest and the least popular is the lightest. The random colors assigned to each internship made the graph look messy and hard to understand. The flipped gradient, achieved through specifying direction within the scale_viridis [`scale_fill_viridis_d(direction = -1)`] function allows the viewer to easily discern the most and least popular internships included in this visualization.
 
-```{r plot-2-final}
+```{r plot-2-final, fig.alt= "Bar chart of the most common organisations that COA students interned for over the past 50 years. The most common internship is Allied Whale with 20 students doing this internship. This is followed by Jackson Labratory with 17; Summer Field Studies and MDI Biological lab with 12; Great Duck Island Research Starion with 11; the YMCA and COA with 10; and Wild Gardens of Acadia, Beech Hill Farm, and Acadia National Park with 8. All of the internehips in the top 10 - excluding the YMCA which are from locations across Maine - are located on MDI or are associated with the College."}
 Top_10_Sites <- Internship_Leaflet_Official_Complete %>% 
   filter(!is.na(Internship.Site) & Internship.Site != "Prior Fulfillment of Internship Requirement") %>% 
   mutate(Internship.Site = case_when( 
@@ -360,7 +360,7 @@ We clustered the points to ensure that our visualization is readable and to pres
 
 Our attempt to make custom markers didn't work, so we used the default markers. However, for more information availability we made it so that when each marker is clicked, there is a pop up that shows you the Internship Site (organization), Location, and Year that the internship took place.
 
-```{r leaflet-1-final, message = FALSE, warning = FALSE}
+```{r leaflet-1-final, message = FALSE, warning = FALSE, fig.alt= "Leaflet map with different markers representing each internship completed by COA students in the past 50 years. The markers are clutered together in locations where many internships have been completed. There are 2 clusters with 1184 and 177 internships located in the continental United States. These clusters also represent internships completed in Canada. There are clusters labled 6 and 9 in Hawaii and Alaska respectivly. There are 2 individual markers in the Northwest Territories and in Iceland. In Central America, there is a cluster with 66 internships. In South America there is a small cluster with 12 internships. There is a cluster with 60 internships in Europe. There are 2 clusters in Africa; one cluster of 5 is located in western Afria while a cluster of 21 is located in south eastern Africa. There are 2 individual markers in Asia; 1 located in Syria and another in Mongolia. There is a cluster of 9 located in Japan/the tip of the Korean Peninsula. There are 13 located in eastern India. A cluster of 2 inernship are located in Indonesia. A cluter of 9 are located in southern Australia, and another cluster of 9 are located in New Zealand."}
 leaflet(Internship_Leaflet_Official_Complete) %>%
   addTiles() %>%
   setView(lng = mean(Internship_Leaflet_Official_Complete$Longitude, na.rm = TRUE), 
@@ -379,7 +379,7 @@ We didn't cluster the points in this graph so it is easier to see changes when d
 
 We used a different color scheme in this graph due to the fact that the scale_color_viridis function is not applicable to leaflet maps. We still wanted to make our visualization color blind friendly so we used Paul Tol's color blind friendly palette. His website and explanation of the scale can be found here : https://personal.sron.nl/~pault/.
 
-```{r leaflet-2-final, message = FALSE, warning = FALSE}
+```{r leaflet-2-final, message = FALSE, warning = FALSE, fig.alt= "Leaflet map with different layers of colored circular markers to represent internships in different decades (1970s, 1980s, 1990s, 2000s, 2010s, and the 2020s). The distriution of internships is concentrated in the US across all decades. Over time students have been completing internships farther and farther away from campus. It should be noted that students tend to favor internships in coastal locations across decades."}
 pal <- colorFactor(palette = c("#117733", "#AA4499", "#DDCC77", "#44AA99", "#332288", "#882255"), domain = Internship_Leaflet_Official_Complete$Decade)
 
 leaflet(Internship_Leaflet_Official_Complete) %>%
