@@ -311,7 +311,7 @@ Top_10_Sites %>%
        y = "Number of Internships") +
   theme(axis.title.y = element_blank())
 
-ggsave("Plot-2-Final", width = 8, height = 4)
+ggsave("Plot-2-Final.png", width = 8, height = 4)
 ```
 
 ### Plot 3: Local, Domestic, and International Internships Over Time
@@ -349,7 +349,7 @@ Internship_Leaflet_Official_Complete %>%
             family = "Times New Roman",
             size = 4.5)
 
-ggsave("Plot-3-Final", width = 8, height = 5)
+ggsave("Plot-3-Final.png", width = 8, height = 5)
 ```
 
 ### Plot 4.1: Leaflet Map of All Internships
